@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+
+  @(#)package.html	1.00 03/04/01
+
+-->
+</head>
+<body bgcolor="white">
+contains abstract classes for creating mini-databases, which will be called
+"stores".  The base store class has two aggregates: a Vector of FieldInfo
+and a Vector of records.
+<p>
+The FieldInfo vector has one element for each field in a record.  The
+FieldInfo element describes the field.  The purpose of the FieldInfo
+vector is for guiding a Table Editor in editing the contents of the record
+vector and in reading and saving the records.  In some cases, it is possible
+to add and delete elements from the FieldInfo vector.
+<p>
+The record vector is the contents of the mini-database.  Each record is
+itself a vector.  Each record vector has exactly the same number of elements
+as in the FieldInfo vector.
+<p>
+store objects are intended to be quite simple.  They do not support database
+operations like project, join, or even sort.  They support at most a single
+key.  The intent is that all manipulation of the contents be done by
+a Table Editor.
+<h2>Package Specification</h2>
+
+This package depends on the other packages at its level.
+
+<h2>Related Documentation</h2>
+
+See the documentation in the other packages.
+
+</body>
+</html>
