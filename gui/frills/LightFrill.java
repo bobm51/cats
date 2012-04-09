@@ -42,11 +42,14 @@ public class LightFrill
    *     TOP means the head is on the top
    * </ul>
    * @param heads is the number of heads to be shown (1-3 heads are allowed)
-   *
+   * 
+   * 03/27/12 - always draw a single signal head to be prototypical
+   * @
+   * 
    * @see FrillLoc
    */
   public LightFrill(FrillLoc position, int orientation, int heads) {
-    super(position, orientation, heads);
+    super(position, orientation, 1);
   }
 
   /*
