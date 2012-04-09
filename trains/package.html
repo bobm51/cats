@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+
+  @(#)package.html	1.00 03/04/01
+
+-->
+</head>
+<body bgcolor="white">
+contains the classes for describing trains.  The Train class contains the
+information about a train - its name, its identity, the lead engine number,
+the crew assigned to it, its status. etc.  Eventually, the plan is to tie this
+in with the car routing program so that the dispatcher can see the length,
+its wheel report and other things.  One Train class is instantiated for each
+train.  The roster holds the list of all trains.  There is a sub-list for
+each state that a train can be in.
+<h2>Package Specification</h2>
+
+This package is tied into cats.layout.items because Trains need to know about
+Blocks for implementing the train movement.
+
+<h2>Related Documentation</h2>
+
+There is none.
+
+</body>
+</html>
