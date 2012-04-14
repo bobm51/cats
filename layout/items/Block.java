@@ -491,7 +491,7 @@ public class Block implements XMLEleObject {
 	 */
 	private boolean FleetOn;
 
-	/**
+        /**
 	 * the constructor.
 	 * 
 	 * @param name
@@ -982,7 +982,7 @@ public class Block implements XMLEleObject {
 //					EnterEdge.reserveBlock(Track.SINGLE_MOVE);
 				} else {
           EnterEdge.removeOccupancy();
-				}
+				} 
 			}
 		}
     setApproach(occupancy);
@@ -1112,7 +1112,7 @@ public class Block implements XMLEleObject {
 		Blocker.clear(TRK_WARRANT);
 	}
 
-	/**
+        /**
 	 * determines the state on the tracks, based on State.
 	 * 
 	 * @return an integer, representing the most dominating bit in State.

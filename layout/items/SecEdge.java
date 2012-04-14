@@ -821,5 +821,5 @@ public class SecEdge
 
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
       SecEdge.class.getName());
-}
+    }
 /* @(#)SecEdge.java */

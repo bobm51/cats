@@ -348,6 +348,7 @@ extends SecEdge {
    */
   private int requestRoute() {
   int status = MyBlock.determineState();
+  
     BlkEdge nextBlk;
     SecEdge egress = null;
     
@@ -389,8 +390,8 @@ public boolean setupReservation() {
   if (requestRoute() <= Block.TRK_IDLE) {
     nextBlk = reserveBlock(Track.SINGLE_MOVE);
     if (nextBlk != null) {
-      nextBlk.MyReserveStrategy.makeReservation(Track.SINGLE_MOVE);
-    }
+            nextBlk.MyReserveStrategy.makeReservation(Track.SINGLE_MOVE);
+        }
     return true;
   }
   return false;
@@ -573,21 +574,32 @@ public Route makeRoute() {
  * This cannot be null because if a track has one end, it has to
  * have at least a matching opposite.
  */
-public SecEdge findEgress() {
-  SecEdge egress = null;
-  Route e = makeRoute();
-  while (e.hasMoreElements()) {
-    if (e.isFouled()) {
-      egress = null;
-      break;
+    public SecEdge findEgress(boolean... optionalParms) {
+        boolean ignoreFouled = false;
+        if ( optionalParms.length > 0) {
+            ignoreFouled = optionalParms[0];
     }
-    egress = e.nextElement();
-  }
-  if (e.isFouled()) {
-    return null;
-  }
-  return egress;
-}
+        SecEdge egress = null;
+        Route e = makeRoute();
+        while (e.hasMoreElements()) {
+            if (e.isFouled()) {
+                //egress = null;
+                break;
+            }
+            egress = e.nextElement();
+        }
+        if (e.isFouled()) {
+            if (ignoreFouled) {
+                egress = e.nextElement();
+                return egress;
+            } else {
+
+                return null;
+            }
+        }
+        return egress;
+    }
+
 
 /**
  * An inner class for providing an Enumeration over the track sections
