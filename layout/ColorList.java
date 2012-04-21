@@ -128,6 +128,11 @@ public class ColorList extends AbstractListManager {
   public static final String BACKGROUND = "BACKGROUND";
   
   /**
+   * the XML tag of the stack color.
+   */
+  public static final String STACK = "STACK";
+  
+  /**
    * the singleton that holds the ColorDefinitions
    */
   static private ColorList ColorManager;

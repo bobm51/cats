@@ -11,11 +11,15 @@ import cats.gui.GridTile;
 import cats.gui.CTCcanvas;
 import cats.gui.Screen;
 import cats.gui.jCustom.JListDialog;
-import cats.rr_events.RREventManager;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.Queue;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 /**
@@ -61,9 +65,16 @@ public class CPEdge
      * is true if the Signal has been cleared.
      */
     private boolean NX;
-    MouseEvent me1 = null;
-    MouseEvent me2 = null;
-    MouseEvent me3 = null;
+    private MouseEvent me1 = null;
+    private MouseEvent me2 = null;
+    private MouseEvent signalME = null;
+    private Point cpPoint, lPoint, sigPoint;
+    private Section sigSection;
+    public static Queue<Point> qp;
+
+    private OSEdge OS;
+    public static CPEdge StackingCP = null;
+    private final ExecutorService ex;
 
     /**
      * constructs a CPEdge with only its Edge identifier.
@@ -83,6 +94,8 @@ public class CPEdge
             MySignal.getSigIcon().protectEdge(this);
         }
         strategyFactory();
+        ex = Executors.newSingleThreadExecutor();
+        if (qp == null)qp = new LinkedList<Point>();
     }
 
     /**
@@ -247,79 +260,135 @@ public class CPEdge
 
     /**
      * addStack()
-     *
+     * is a 2 pass process.  the first pass sets the calling cp and returns. 
+     * The next mouse down event is returned and checked to see if it's from a signal.
+     * If so, the stack is processed.  If not, it exits.
      */
-    private void addStack() {
-        int mods = 16;
-        OSEdge os;
-        Component lcanvas = new CTCcanvas();
-        Rectangle lRect;
-        //lcanvas.addMouseListener(new lListener());
-        
-        //private class lListener {
-            
-        //}
-
-        if (!hasClearRoute()) {
-            SecEdge egress = findEgress(true); // get the section where the switchpoints are for the mouse event
-            os = (OSEdge) egress;
-            lRect = os.MySection.getTile().getSize();
-            me1 = new MouseEvent(lcanvas, 501, System.currentTimeMillis(), mods, lRect.x + lRect.width / 2,
-                    lRect.y + lRect.height / 2, 1, false, 1);
-
-            me2 = new MouseEvent(lcanvas, 502, System.currentTimeMillis(), mods, lRect.x + lRect.width / 2,
-                    lRect.y + lRect.height / 2, 1, false, 1);
-        }
-        
-        Thread t = new Thread(new StackThread());
-        t.setName("Stack Thread");
-        t.start();
-    }
     
-    private class StackThread implements Runnable {
-
-        public void run() {
-;
-            try {
-                while (!setupStack(me1, me2)) {                   
-                    Thread.sleep(1000);
-                }
-            } catch (InterruptedException e) {
-                return;
-            }
-            GridTile.doUpdates();
+    private void addStack() {
+        
+        if (StackingCP == null) {
+            StackingCP = this;
+            return;
+        } else {
+            StackingCP = null;
         }
-     }
-           
-
+        
+        sigPoint = signalME.getPoint();
+        Section lsigSection = Screen.DispatcherPanel.locatePt(sigPoint);
+        if (lsigSection != null && lsigSection.getEdge(MyEdge).hasSignal()) {
+            System.out.println("OK");
+        } else {
+            System.out.println("shit");
+            return;
+        }
+          String result; 
+        qp.add(sigPoint);  // add the point of the 2nd signal to the queue
+        ex.execute(new StackThread());
+        //FutureTask<String> fu = ex.submit(new StackThread(), result);  // each request is run in a separate thread.
+    }
     /**
-     * setupStack If the points were not aligned then the mouse events exist, in
-     * which case the points are thrown. The route is then reserved. If the
-     * route cannot be reserved then the points are returned to their original
-     * position.
+     * setupStack
+     * is run in a separate thread.  The executor guarantees that each thread runs in the order
+     * it was executed. Mouse events are built to throw the turnout, if necessary. Current 
+     * track position is used but the target signal point is obtained from a queue.  Otherwise the
+     * target signal point will always be the last one clicked.
      *
      * @param me1 Created mouse down event
      * @param me2 Created mouse release event
      * @return
      */
-           private boolean setupStack(MouseEvent me1, MouseEvent me2) {
+   
+        private boolean setupStack() {
+        int mods = 16;
+        Component lcanvas = new CTCcanvas();
+        Rectangle lRect;
+
+        OS = null;
+        me1 = null;
+        me2 = null;
+        Point lsigPoint = qp.peek();   
+        sigSection = Screen.DispatcherPanel.locatePt(lsigPoint);
+
+        lPoint = sigSection.getCoordinates();
+        cpPoint = MySection.getCoordinates().getLocation();
+        Section lSection = MySection;
+        lSection = traverse().getNeighbor().getSection();
+
+        try {
+            OS = (OSEdge) lSection.getEdge(MyEdge);
+        } catch (ClassCastException e) {
+        }
+
+        if (!hasClearRoute()) {
+            SecEdge egress = findEgress(true); // get the section where the switchpoints are for the mouse event            
+            lRect = egress.MySection.getTile().getSize(); }
+        else {
+            lRect = lSection.getTile().getSize();           
+        }
+            
+        me1 = new MouseEvent(lcanvas, 501, System.currentTimeMillis(), mods, lRect.x + lRect.width / 2,
+                lRect.y + lRect.height / 2, 1, false, 1);
+
+        me2 = new MouseEvent(lcanvas, 502, System.currentTimeMillis(), mods, lRect.x + lRect.width / 2,
+                lRect.y + lRect.height / 2, 1, false, 1);
+        
+
+        if(MyBlock.isReserved()) {      //facing point points aligned signal already cleared.
+        return false;
+        }
+        if (OS == null) {
+        } else if ((cpPoint.y == lPoint.y) && (OS.CurrentTrk == OS.NormalRoute)) {
+        } else if ((cpPoint.y != lPoint.y) && (OS.CurrentTrk != OS.NormalRoute)) {
+        } else {
+
             if ((me1 != null) && (me2 != null)) {
                 Screen.DispatcherPanel.mousePressedAction(me1);
                 Screen.DispatcherPanel.mouseReleasedAction(me2);
             }
-
-
-            if (!setupReservation()) {
-                if ((me1 != null) && (me2 != null)) {
-
-                    Screen.DispatcherPanel.mousePressedAction(me1);
-                    Screen.DispatcherPanel.mouseReleasedAction(me2);
-                }
-                return false;
-            }
-            return true;           
         }
-           
+
+        if (!setupReservation()) {
+            if ((me1 != null) && (me2 != null)) {
+                // we threw the switch and then couldn't make the reservation.  throw it back.
+                Screen.DispatcherPanel.mousePressedAction(me1);
+                Screen.DispatcherPanel.mouseReleasedAction(me2);
+            }
+            return false;
+        }
+        qp.remove();  // only remove the point from the queue when the reservation has been made.
+        return true;
+    }
+
+ 
+
+    private class StackThread implements Runnable {
+
+        public void run() {
+            try {
+                while (!setupStack()) {
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                return;
+            }
+            GridTile.doUpdates();  //repaint
+        }
+    }
+
+ 
+        
+/**
+ * setEvent
+ * is invoked from the dispatcher panel during a stack setup when the user clicks
+ * on the screen, hopefully on a signal.
+ * @param e 
+ */
+    public void setEvent(MouseEvent e) {
+        signalME = e;
+        addStack();
+    }
+        
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
             CPEdge.class.getName());
 }

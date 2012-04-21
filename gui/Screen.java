@@ -11,10 +11,7 @@ package cats.gui;
 import cats.gui.CTCcanvas;
 import cats.gui.frills.TrainFrill;
 import cats.jmri.JmriPrefixManager;
-import cats.layout.items.Block;
-import cats.layout.items.LockedDecoders;
-import cats.layout.items.PanelSignal;
-import cats.layout.items.Section;
+import cats.layout.items.*;
 import cats.layout.xml.*;
 import cats.rr_events.MousePressEvent;
 import cats.rr_events.MouseRelEvent;
@@ -565,10 +562,17 @@ public class Screen
    * @param e describes the mouse button event.
    *
    * @see java.awt.event.MouseEvent
+   * 
+   * Modified to intercept the first mouse event during a stack request
+   * and send it to the calling CPEdge
    */
   public void mousePressed(MouseEvent e) {
-    MousePressEvent mpe = new MousePressEvent(e);
-    mpe.queUp();
+    if (CPEdge.StackingCP == null) {      
+        MousePressEvent mpe = new MousePressEvent(e);
+        mpe.queUp();
+    } else {
+        CPEdge.StackingCP.setEvent(e);
+    }
   }
 
   /**
