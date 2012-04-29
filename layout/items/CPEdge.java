@@ -188,7 +188,7 @@ public class CPEdge
 
         //menu[2] = new String(MenuItems[2][0]);
 
-        menu[3] = new String(MenuItems[3][0]);
+            menu[3] = new String(MenuItems[3][0]);
 
         switch (JListDialog.select(menu, "Traffic Operation", location)) {
             case 0: // allow/disallow Traffic
@@ -276,13 +276,14 @@ public class CPEdge
         
         sigPoint = signalME.getPoint();
         Section lsigSection = Screen.DispatcherPanel.locatePt(sigPoint);
-        if (lsigSection != null && lsigSection.getEdge(MyEdge).hasSignal()) {
+        if ((lsigSection != null ) && (lsigSection.getEdge(0).hasSignal() || 
+                lsigSection.getEdge(2).hasSignal())) {
             System.out.println("OK");
         } else {
             System.out.println("shit");
             return;
         }
-          String result; 
+          //String result; 
         qp.add(sigPoint);  // add the point of the 2nd signal to the queue
         ex.execute(new StackThread());
         //FutureTask<String> fu = ex.submit(new StackThread(), result);  // each request is run in a separate thread.
@@ -309,17 +310,22 @@ public class CPEdge
         me2 = null;
         Point lsigPoint = qp.peek();   
         sigSection = Screen.DispatcherPanel.locatePt(lsigPoint);
-
         lPoint = sigSection.getCoordinates();
         cpPoint = MySection.getCoordinates().getLocation();
         Section lSection = MySection;
-        lSection = traverse().getNeighbor().getSection();
+        
+        if (MySignal.SigName.equals("Gustavson SB")) {  // special handling for the crossing
+            lSection = Screen.DispatcherPanel.locateSection(49, 4);
+        }
+        else {  
+            lSection = traverse().getNeighbor().getSection();
+        }
 
         try {
             OS = (OSEdge) lSection.getEdge(MyEdge);
         } catch (ClassCastException e) {
         }
-
+        
         if (!hasClearRoute()) {
             SecEdge egress = findEgress(true); // get the section where the switchpoints are for the mouse event            
             lRect = egress.MySection.getTile().getSize(); }
