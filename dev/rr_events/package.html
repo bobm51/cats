@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+
+  @(#)package.html	1.00 03/04/01
+
+-->
+</head>
+<body bgcolor="white">
+contains classes for implementing the input queue.  The Swing documentation
+strongly recommends that lengthy processing happen somewhere other than the
+Swing dispatch thread.  Furthermore, potential race conditions exist if
+the dispatcher is doing something at the same time as an event is received
+from the layout.  Therefore, all events are funneled through a queue and the
+events are processed in an independent thread.  This makes Swing processing
+quick and simple (the Swing events are converted to command objects and
+queued).  It also eliminates the possibility of contention beause the queue
+serializes events.  Since the queue is a classic producer/consumer problem,
+it is synchronized.
+
+<h2>Package Specification</h2>
+
+This package depends upon the Queue class.
+
+<h2>Related Documentation</h2>
+
+See the Swing documentation and the Command design pattern.
+
+</body>
+</html>
