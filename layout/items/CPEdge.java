@@ -15,10 +15,13 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.Queue;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
@@ -70,11 +73,14 @@ public class CPEdge
     private MouseEvent signalME = null;
     private Point cpPoint, lPoint, sigPoint;
     private Section sigSection;
-    public static Queue<Point> qp;
+    private Queue<Point> qp;
 
     private OSEdge OS;
     public static CPEdge StackingCP = null;
     private final ExecutorService ex;
+    private static Map targetMap = null;
+    private static Map blockMap = null;
+
 
     /**
      * constructs a CPEdge with only its Edge identifier.
@@ -94,8 +100,21 @@ public class CPEdge
             MySignal.getSigIcon().protectEdge(this);
         }
         strategyFactory();
+        
+        if (targetMap == null) {
+            targetMap = Collections.synchronizedMap(new HashMap());
+        }
+        
+        if (blockMap == null) {
+            blockMap = Collections.synchronizedMap(new HashMap());
+        }
+        
         ex = Executors.newSingleThreadExecutor();
-        if (qp == null)qp = new LinkedList<Point>();
+//        if (qp == null)qp = new LinkedList<Point>();
+        
+        if (!blockMap.containsKey(MyBlock.getBlockName())) {
+            blockMap.put(MyBlock.getBlockName(), new LinkedList<Point>());
+        }
     }
 
     /**
@@ -283,8 +302,10 @@ public class CPEdge
             System.out.println("shit");
             return;
         }
-          //String result; 
+          //String result;
+        qp = (Queue) blockMap.get(MyBlock.getBlockName());
         qp.add(sigPoint);  // add the point of the 2nd signal to the queue
+        targetMap.put(sigPoint, this);
         ex.execute(new StackThread());
         //FutureTask<String> fu = ex.submit(new StackThread(), result);  // each request is run in a separate thread.
     }
@@ -302,13 +323,17 @@ public class CPEdge
    
         private boolean setupStack() {
         int mods = 16;
-        Component lcanvas = new CTCcanvas();
+        final Component lcanvas = new CTCcanvas();
         Rectangle lRect;
+        boolean switchThrown = false;
 
         OS = null;
         me1 = null;
         me2 = null;
-        Point lsigPoint = qp.peek();   
+        Point lsigPoint = qp.peek();
+        if (!targetMap.get(lsigPoint).equals(this)) {
+            return false;
+        }
         sigSection = Screen.DispatcherPanel.locatePt(lsigPoint);
         lPoint = sigSection.getCoordinates();
         cpPoint = MySection.getCoordinates().getLocation();
@@ -343,19 +368,26 @@ public class CPEdge
         if(MyBlock.isReserved()) {      //facing point points aligned signal already cleared.
         return false;
         }
+        
+        if(!hasClearRoute()) {
+            Screen.DispatcherPanel.mousePressedAction(me1);
+            Screen.DispatcherPanel.mouseReleasedAction(me2);
+            switchThrown = true;            
+        }
+        
         if (OS == null) {
         } else if ((cpPoint.y == lPoint.y) && (OS.CurrentTrk == OS.NormalRoute)) {
         } else if ((cpPoint.y != lPoint.y) && (OS.CurrentTrk != OS.NormalRoute)) {
-        } else {
-
+        } else {            
             if ((me1 != null) && (me2 != null)) {
                 Screen.DispatcherPanel.mousePressedAction(me1);
                 Screen.DispatcherPanel.mouseReleasedAction(me2);
-            }
+                switchThrown = true;
+            }   
         }
 
         if (!setupReservation()) {
-            if ((me1 != null) && (me2 != null)) {
+            if (switchThrown) {
                 // we threw the switch and then couldn't make the reservation.  throw it back.
                 Screen.DispatcherPanel.mousePressedAction(me1);
                 Screen.DispatcherPanel.mouseReleasedAction(me2);
