@@ -74,7 +74,7 @@ public class CPEdge
     private Point cpPoint, lPoint, sigPoint;
     private Section sigSection;
     private Queue<Point> qp;
-
+    private int stackInProgress = 0;
     private OSEdge OS;
     public static CPEdge StackingCP = null;
     private final ExecutorService ex;
@@ -291,15 +291,14 @@ public class CPEdge
             return;
         } else {
             StackingCP = null;
+            stackInProgress++;
         }
         
         sigPoint = signalME.getPoint();
         Section lsigSection = Screen.DispatcherPanel.locatePt(sigPoint);
         if ((lsigSection != null ) && (lsigSection.getEdge(0).hasSignal() || 
                 lsigSection.getEdge(2).hasSignal())) {
-            System.out.println("OK");
         } else {
-            System.out.println("shit");
             return;
         }
           //String result;
@@ -340,7 +339,7 @@ public class CPEdge
         Section lSection = MySection;
         
         if (MySignal.SigName.equals("Gustavson SB")) {  // special handling for the crossing
-            lSection = Screen.DispatcherPanel.locateSection(49, 4);
+            lSection = Screen.DispatcherPanel.locateSection(51, 4);
         }
         else {  
             lSection = traverse().getNeighbor().getSection();
@@ -395,6 +394,8 @@ public class CPEdge
             return false;
         }
         qp.remove();  // only remove the point from the queue when the reservation has been made.
+        stackInProgress--;
+        if (stackInProgress == 0) EdgeTile.setStackInProgress(false);
         return true;
     }
 
@@ -405,6 +406,14 @@ public class CPEdge
         public void run() {
             try {
                 while (!setupStack()) {
+                    if(stackInProgress > 0 ) {
+                        if(!EdgeTile.isStackInProgress()) {
+                            EdgeTile.setStackInProgress(true);
+                            EdgeTile.requestUpdate();
+                            EdgeTile.doUpdates();
+                        }
+                        
+                    }
                     Thread.sleep(1000);
                 }
             } catch (InterruptedException e) {

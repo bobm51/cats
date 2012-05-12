@@ -130,6 +130,8 @@ public abstract class SignalFrill
    * is the logic controlling the Icon's color.
    */
   private PanelSignal Owner;
+  
+  private boolean useStackColor = false;
 
   /**
    * constructs the SignalFrill.
@@ -171,7 +173,12 @@ public abstract class SignalFrill
   public void setOwner(PanelSignal owner) {
     Owner = owner;
   }
-
+  public void setStackColor(boolean stackInProgress) {
+      useStackColor = false;
+      if(stackInProgress) {
+          useStackColor = true;
+      }
+  }
   /*
    * is the method called by a GridTile, describing itself - the area on
    * the screen to be written to.
@@ -214,8 +221,17 @@ public abstract class SignalFrill
       else {
         y = Anchor.y;
       }
+      
+      String saveColor = SigColor.getColorTag();
+      
+      if(useStackColor) {
+        SigColor.setColor("STACK");
+        g.setColor(SigColor.getColor());
+      }
+      
       drawMast(x, y, g);
       g.setColor(oldColor);
+      SigColor.setColor(saveColor);
     }
   }
 

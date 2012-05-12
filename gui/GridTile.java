@@ -163,6 +163,16 @@ public class GridTile
    *
    * @see cats.layout.items.Section
    */
+  private boolean stackInProgress = false;
+
+    public boolean isStackInProgress() {
+        return stackInProgress;
+    }
+
+    public void setStackInProgress(boolean stackInProgress) {
+        this.stackInProgress = stackInProgress;
+    }
+  
   public GridTile(Section section) {
 //    super();
     MySection = section;
@@ -305,6 +315,12 @@ public class GridTile
     Frills frill;
     for (ListIterator<Frills> iter = MyFrills.listIterator(); iter.hasNext(); ) {
       frill = iter.next();
+      if(frill instanceof cats.gui.frills.LightFrill) {
+          frill.setStackColor(false); 
+          if(stackInProgress) {
+              frill.setStackColor(true);
+          }
+      }
       frill.decorate(g);
     }
   }
