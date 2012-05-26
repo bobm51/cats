@@ -47,7 +47,7 @@ public class CPEdge
             "Allow Traffic", "Block Traffic"}, {
             "Turn on Fleeting", "Turn off Fleeting"}, {
             "Entrance Signal", null}, {
-            "Add Stack Command", null}
+            "Stack Route", "Cancel Stack"}
     };
 
     /**
@@ -75,6 +75,7 @@ public class CPEdge
     private Section sigSection;
     private Queue<Point> qp;
     private int stackInProgress = 0;
+    private boolean cancelStackRequested = false;
     private OSEdge OS;
     public static CPEdge StackingCP = null;
     private final ExecutorService ex;
@@ -192,7 +193,7 @@ public class CPEdge
      * @see cats.gui.jCustom.JListDialog
      */
     private void edgeMenu(Point location) {
-        String[] menu = new String[4];
+        String[] menu = new String[5];
         if (Traffic) {
             menu[0] = new String(MenuItems[0][1]);
         } else {
@@ -207,7 +208,10 @@ public class CPEdge
 
         //menu[2] = new String(MenuItems[2][0]);
 
-            menu[3] = new String(MenuItems[3][0]);
+        menu[3] = new String(MenuItems[3][0]);
+        if (stackInProgress > 0) {
+            menu[4] = new String(MenuItems[3][1]);
+        }
 
         switch (JListDialog.select(menu, "Traffic Operation", location)) {
             case 0: // allow/disallow Traffic
@@ -224,6 +228,10 @@ public class CPEdge
 
             case 3:
                 addStack();
+                break;
+                
+            case 4:
+                cancelStackRequested = true;
                 break;
 
             default:
@@ -301,13 +309,13 @@ public class CPEdge
         } else {
             return;
         }
-          //String result;
+          
         qp = (Queue) blockMap.get(MyBlock.getBlockName());
         qp.add(sigPoint);  // add the point of the 2nd signal to the queue
         targetMap.put(sigPoint, this);
         ex.execute(new StackThread());
-        //FutureTask<String> fu = ex.submit(new StackThread(), result);  // each request is run in a separate thread.
-    }
+        
+       }
     /**
      * setupStack
      * is run in a separate thread.  The executor guarantees that each thread runs in the order
@@ -333,6 +341,17 @@ public class CPEdge
         if (!targetMap.get(lsigPoint).equals(this)) {
             return false;
         }
+        
+        if (cancelStackRequested) {
+            cancelStackRequested = false;
+            stackInProgress--;
+            qp.remove();
+            EdgeTile.setStackInProgress(false);
+            EdgeTile.requestUpdate();
+            EdgeTile.doUpdates();
+            return true;
+        }
+        
         sigSection = Screen.DispatcherPanel.locatePt(lsigPoint);
         lPoint = sigSection.getCoordinates();
         cpPoint = MySection.getCoordinates().getLocation();

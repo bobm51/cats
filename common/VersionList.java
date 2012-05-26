@@ -29,6 +29,6 @@ public static final String CATS_VERSION = "2.32";
 /**
  * designer
  */
-public static final String DESIGNER_VERSION = "2.11";
+public static final String DESIGNER_VERSION = "2.13";
 }
 /* @(#)VersionList.java */
