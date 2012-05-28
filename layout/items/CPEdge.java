@@ -346,7 +346,7 @@ public class CPEdge
             cancelStackRequested = false;
             stackInProgress--;
             qp.remove();
-            if (stackInProgress <= 0) {
+            if (stackInProgress == 0) {
                 EdgeTile.setStackInProgress(false);    
             }
             
