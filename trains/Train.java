@@ -1300,7 +1300,6 @@ implements StoredObject, XMLEleObject {
 			dest = arrival.getSection().getCoordinates();
 			destEdge = String.valueOf(arrival.getEdge());
 			OperationsTrains.instance().moveTrain(getSymbol(), station);
-			OperationsTrains.instance().requestLength(getSymbol());
 		}
 		else if (arrive != null) {
 			station = arrive.getStation();
@@ -1310,7 +1309,6 @@ implements StoredObject, XMLEleObject {
 			else {
 				movement = movement.concat(station);
 				OperationsTrains.instance().moveTrain(getSymbol(), station);
-				OperationsTrains.instance().requestLength(getSymbol());
 			}
 			dest = arrive.getCoordinates();
 		}

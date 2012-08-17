@@ -24,11 +24,11 @@ public class VersionList {
 /**
  * CATS
  */
-public static final String CATS_VERSION = "2.32";
+public static final String CATS_VERSION = "2.33";
 
 /**
  * designer
  */
-public static final String DESIGNER_VERSION = "2.11";
+public static final String DESIGNER_VERSION = "2.13";
 }
 /* @(#)VersionList.java */
