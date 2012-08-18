@@ -24,7 +24,7 @@ public class VersionList {
 /**
  * CATS
  */
-public static final String CATS_VERSION = "2.32";
+public static final String CATS_VERSION = "2.33";
 
 /**
  * designer

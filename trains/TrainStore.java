@@ -807,6 +807,10 @@ public class TrainStore
     FieldVector fields = FieldInfoStore.toFormatting();
     RecordVector<GenericRecord> trial = DataStore.makeCopy();
     trial.setStrategy(new LineUpSelectionStrategy());
+    /*
+     *   @todo see if I can make a non modal display of below  
+     * 
+     */
     if (TrainEditPane.editRecords(new TrainEditPane(createModel(trial, fields), true), FRAME_TITLE)) {
       updateRecords(trial);
       updateFormat(fields);

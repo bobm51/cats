@@ -27,12 +27,12 @@ public class Constants {
   public final static String TRUE = "true";
   
   /**
-   * is a consistent string to use for fasle
+   * is a consistent string to use for false
    */
   public final static String FALSE = "false";
   
   /**
-   * is the field Seperator.  No string should include it.
+   * is the field Separator.  No string should include it.
    */
   public final static char FS = '\t';
   
