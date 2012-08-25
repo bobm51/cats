@@ -307,6 +307,7 @@ public class CPEdge
         if ((lsigSection != null ) && (lsigSection.getEdge(0).hasSignal() || 
                 lsigSection.getEdge(2).hasSignal())) {
         } else {
+            stackInProgress--;
             return;
         }
           
