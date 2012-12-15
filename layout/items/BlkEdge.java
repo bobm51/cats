@@ -570,6 +570,7 @@ public Route makeRoute() {
  * <li>a switch is aligned against the track
  * </ul>
  * 
+ * @param optionalParms 
  * @return the SecEdge which is on the other end of the Route.
  * This cannot be null because if a track has one end, it has to
  * have at least a matching opposite.
@@ -599,8 +600,26 @@ public Route makeRoute() {
         }
         return egress;
     }
-
-
+    
+ /**
+ * Cross the block looking for switch points, which are OS
+ * edges in CATS.  Only facing points are found.
+ * @return the OSEdge if found, null if not
+ */
+    public SecEdge findOS() {
+        SecEdge theEdge = null;
+        OSEdge OS = null;      
+        Route r = makeRoute();
+        while (r.hasMoreElements()) {            
+             theEdge = r.nextElement(); 
+             if (theEdge.getSection().getEdge(MyEdge) instanceof OSEdge){
+                 OS = (OSEdge) theEdge.getSection().getEdge(MyEdge);
+                 break;
+             }
+        }
+        return OS;
+    }
+           
 /**
  * An inner class for providing an Enumeration over the track sections
  * in a route through the Block.

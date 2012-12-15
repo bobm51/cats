@@ -361,13 +361,15 @@ public class CPEdge
         cpPoint = MySection.getCoordinates().getLocation();
         Section lSection = MySection;
         
-        if (MySignal.SigName.equals("Gustavson SB")) {  // special handling for the crossing
-            lSection = Screen.DispatcherPanel.locateSection(51, 4);
+        SecEdge theEdge = findOS();
+        
+        if (theEdge != null) { // facing point switches are handled here
+            lSection = theEdge.getSection();
         }
         else {  
-            lSection = traverse().getNeighbor().getSection();
+            lSection = traverse().getNeighbor().getSection(); // trailing point switches are handled here
         }
-
+        
         try {
             OS = (OSEdge) lSection.getEdge(MyEdge);
         } catch (ClassCastException e) {
