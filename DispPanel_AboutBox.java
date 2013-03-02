@@ -16,7 +16,7 @@ import cats.common.VersionList;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009, 2010, 2011, 2012</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2010, 2011, 2012, 2013</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -42,9 +42,9 @@ public class DispPanel_AboutBox extends JDialog implements ActionListener {
   GridLayout gridLayout1 = new GridLayout();
   String product = "CATS";
 //  public static final String VERSION = "2.15";
-  String version = "Revision " + VersionList.CATS_VERSION + " on July 29, 2012";
+  String version = "Revision " + VersionList.CATS_VERSION + " on " + VersionList.CATS_DATE;
 //  String version = "$Revision$ on $Date$";
-  String copyright = "Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012";
+  String copyright = "Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013";
   String comments = "a model railroad dispatcher panel";
   /**
    * constructs the "About" box.
