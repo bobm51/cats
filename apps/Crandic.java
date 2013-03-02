@@ -31,6 +31,7 @@ import java.awt.Cursor;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 import java.io.File;
+import java.net.URL;
 import java.text.MessageFormat;
 import javax.swing.JOptionPane;
 
@@ -55,7 +56,7 @@ import jmri.JmriException;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009, 2010</p>
+ * <p>Copyright: Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2013</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -444,10 +445,10 @@ extends Apps {
         }
       }
       else if (IncludeFileTag.equals(tag)) {
-        File pFile = InstanceManager.configureManagerInstance().find(value);
-        if (pFile!=null) {
+        URL pURL = InstanceManager.configureManagerInstance().find(value);
+        if (pURL!=null) {
           try {
-          InstanceManager.configureManagerInstance().load(pFile);
+          InstanceManager.configureManagerInstance().load(pURL);
 		} catch (JmriException e) {
 	      log.warn("failed to load config file");
 		}
