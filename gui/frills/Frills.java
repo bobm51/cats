@@ -66,7 +66,7 @@ public abstract class Frills {
    * @param g is the Graphics context on which to draw
    */
   abstract public void decorate(Graphics g);
-  
+
    public void setStackColor(boolean stackInProgress) {
        return;
    }

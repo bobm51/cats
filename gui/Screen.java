@@ -568,11 +568,11 @@ public class Screen
    */
   public void mousePressed(MouseEvent e) {
     if (CPEdge.StackingCP == null) {      
-        MousePressEvent mpe = new MousePressEvent(e);
-        mpe.queUp();
+    MousePressEvent mpe = new MousePressEvent(e);
+    mpe.queUp();
     } else {
         CPEdge.StackingCP.setEvent(e);
-    }
+  }
   }
 
   /**
