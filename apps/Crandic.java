@@ -1,6 +1,6 @@
 /* Name: Crandic.java
  *
- * What:
+ * What: """"
  *   The root program for creating the dispatcher program.
  */
 
