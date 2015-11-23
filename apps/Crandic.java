@@ -1,7 +1,7 @@
 /* Name: Crandic.java
  *
- * What:
- *   The root program for creating the dispatcher program.
+ * What: 
+ *   The root program for creating the dispatcher program. fudd
  */
 
 package cats.apps;
