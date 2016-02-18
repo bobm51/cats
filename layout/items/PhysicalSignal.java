@@ -186,6 +186,10 @@ implements XMLEleObject {
     // Just in case an indication is not defined, find one more restrictive
     // that is defined
     for (; MyMap.getPresentation(rule, 0) == null; ++rule) {
+    	if (rule >= AspectMap.IndicationNames.length) {
+    		rule = LastRule;
+    		break;
+    	}
     }
     if (!SignalTest && (rule != LastRule)) {
       sendSignalCommands(rule);

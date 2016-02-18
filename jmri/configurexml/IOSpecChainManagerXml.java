@@ -6,7 +6,9 @@
  */
 package cats.jmri.configurexml;
 
-import org.jdom.Element;
+import jmri.configurexml.JmriConfigureXmlException;
+
+import org.jdom2.Element;
 
 import cats.jmri.IOSpecChainManager;
 
@@ -16,7 +18,7 @@ import cats.jmri.IOSpecChainManager;
  *
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A model railroad dispatching program</p>
- * <p>Copyright: Copyright (c) 2006, 2009</p>
+ * <p>Copyright: Copyright (c) 2006, 2009, 2016</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version 1.0
@@ -46,4 +48,10 @@ public class IOSpecChainManagerXml extends jmri.managers.configurexml.AbstractSe
   }
 
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(MeterLnSensorManagerXml.class.getName());
+
+@Override
+public boolean load(Element sharedSensors, Element perNodeSensors)
+		throws JmriConfigureXmlException {
+	return this.load(sharedSensors);
+}
 }

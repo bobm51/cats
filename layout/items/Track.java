@@ -21,7 +21,7 @@ import java.awt.Point;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2013</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -48,6 +48,7 @@ public class Track
       "Limited",
       "Medium",
       "Slow",
+      "None",
       "Approach"
   };
 
@@ -77,9 +78,14 @@ public class Track
   public static final int SLOW = 4;
   
   /**
+   * the index of "None"
+   */
+  public static final int NONE = 5;
+  
+  /**
    * the index of "Approach" speed
    */
-  public static final int APPROACH = 5;
+  public static final int APPROACH = 6;
   
   /**
    * Though not in the list, a signal may be showing Stop.

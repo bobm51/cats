@@ -24,15 +24,15 @@ public class VersionList {
 /**
  * CATS
  */
-public static final String CATS_VERSION = "2.34";
+public static final String CATS_VERSION = "2.36";
 
 /**
  * CATS date
  */
-public static final String CATS_DATE = "February 14, 2013";
+public static final String CATS_DATE = "February 13, 2016";
 /**
  * designer
  */
-public static final String DESIGNER_VERSION = "2.13";
+public static final String DESIGNER_VERSION = "2.14";
 }
 /* @(#)VersionList.java */

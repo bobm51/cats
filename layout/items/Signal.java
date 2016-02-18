@@ -12,7 +12,7 @@ package cats.layout.items;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Copyright: Copyright (c) 2004, 2013</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -96,7 +96,7 @@ public class Signal {
     PreviousIndication = new Indication(MyIndication);
     TrackState = new Indication();
     NextIndication = new Indication(Track.NORMAL, Block.TRK_RESERVED - 1);
-    NextIndication.setNextSpeed(Track.STOP);
+    NextIndication.setNextSpeed(Track.NONE);
     NextIsReal = false;
     HomeSignal = false;
     SignalType = VIRTUAL_SIGNAL;

@@ -17,8 +17,8 @@
  */
 package cats.jmri.configurexml;
 
-import org.jdom.Attribute;
-import org.jdom.Element;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 import cats.jmri.SWSignalHead;
 
@@ -38,7 +38,7 @@ import jmri.SignalHead;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2016</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
