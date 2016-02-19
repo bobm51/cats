@@ -2,7 +2,7 @@ package cats.jmri.configurexml;
 
 import jmri.configurexml.JmriConfigureXmlException;
 import cats.jmri.MeterLnSensorManager;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Provides load and store functionality for
@@ -56,5 +56,11 @@ public class MeterLnSensorManagerXml extends jmri.managers.configurexml.Abstract
     }
 
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(MeterLnSensorManagerXml.class.getName());
+
+	@Override
+	public boolean load(Element sharedSensors, Element perNodeSensors)
+			throws JmriConfigureXmlException {
+		return this.load(sharedSensors);
+	}
 }
 /* @(#)MeterLnSensorManagerXml.java */

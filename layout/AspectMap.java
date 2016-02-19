@@ -10,6 +10,7 @@ package cats.layout;
 
 import cats.layout.items.Track;
 import cats.layout.xml.*;
+
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
@@ -20,7 +21,7 @@ import java.util.StringTokenizer;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2010</p>
+ * <p>Copyright: Copyright (c) 2004, 2010, 2010, 2013</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -57,6 +58,42 @@ public class AspectMap
   static final String SEP = "|";
 
   /**
+   * is the tag for a Restricting definition from an older panel.  It is
+   * used to populate the definitions in a new panel.
+   */
+  static final String RESTRICTING_TAG = "R290";
+
+  /**
+   * is the prefix on the Advance speed definitions
+   */
+  static private final String ADV_PREFIX = "ADV_";
+  
+  /**
+   * is the prefix on the Restricting definitions
+   */
+  static final String RESTRICTING_PREFIX = "RES_";
+  
+  /**
+   * is the suffix on the Normal speed definition
+   */
+  static private final String NORMAL_SUFFIX = "NORM";
+  
+  /**
+   * is the suffix on the Limited speed definition
+   */
+  static private final String LIMITED_SUFFIX = "LIM";
+  
+  /**
+   * is the suffix on the Medium speed definition
+   */
+  static private final String MEDIUM_SUFFIX = "MED";
+  
+  /**
+   * is the suffix on the SLow speed definition
+   */
+  static private final String SLO_SUFFIX = "SLO";
+  
+  /**
    * The following describes all the possible indications supported
    * by the dispatcher panel.  The list represents 4 speeds (normal,
    * limited, medium, slow), with 2 block (the protected block and
@@ -72,6 +109,10 @@ public class AspectMap
       , {
       "ARA 284 - Normal Approach Slow", "R284"}
       , {
+          "Restrict Normal", RESTRICTING_PREFIX + NORMAL_SUFFIX}
+      , {
+          "Adv Normal", ADV_PREFIX + NORMAL_SUFFIX}
+      , {
       "ARA 285 - Approach", "R285"}
       , {
       "ARA 281C - Limited Clear", "R281C"}
@@ -81,6 +122,10 @@ public class AspectMap
       "CROR 413 - Limited Approach Medium", "C413"}
       , {
       "CROR 414 - Limited Approach Slow", "C414"}
+      , {
+          "Restrict Limited", RESTRICTING_PREFIX + LIMITED_SUFFIX}
+      , {
+          "Adv Limited", ADV_PREFIX + LIMITED_SUFFIX}
       , {
       "ARA 281D - Limited Approach", "R281D"}
       , {
@@ -92,6 +137,10 @@ public class AspectMap
       , {
       "ARA 283B - Medium Approach Slow", "R283B"}
       , {
+          "Restrict Medium", RESTRICTING_PREFIX + MEDIUM_SUFFIX}
+      , {
+          "Adv Medium", ADV_PREFIX + MEDIUM_SUFFIX}
+      , {
       "ARA 286 - Medium Approach", "R286"}
       , {
       "ARA 287 - Slow Clear", "R287"}
@@ -102,17 +151,11 @@ public class AspectMap
       , {
       "CROR 424 - Slow Approach Slow", "C424"}
       , {
+          "Restrict Slow", RESTRICTING_PREFIX + SLO_SUFFIX}      
+      , {
+          "Adv Slow", ADV_PREFIX + SLO_SUFFIX}      
+      , {
       "ARA 288 - Slow Approach", "R288"}
-      , {
-      "Advance Approach", "ADV_NORM"}
-      , {
-      "Advance Limited Approach", "ADV_LIM"}
-      , {
-      "Advance Medium Approach", "ADV_MED"}
-      , {
-      "Advance Slow Approach", "ADV_SLO"}
-      , {
-      "ARA 290 - Restricting", "R290"}
       , {
       "ARA 291 - Stop and Proceed", "R291"}
       , {
@@ -520,7 +563,9 @@ public class AspectMap
     SpeedTable[Track.DEFAULT][Track.STOP] =
         SpeedTable[Track.NORMAL][Track.STOP] = findRule("R285");
     SpeedTable[Track.DEFAULT][Track.APPROACH] =
-        SpeedTable[Track.NORMAL][Track.APPROACH] = findRule("ADV_NORM");
+        SpeedTable[Track.NORMAL][Track.APPROACH] = findRule(ADV_PREFIX + NORMAL_SUFFIX);
+    SpeedTable[Track.DEFAULT][Track.NONE] =
+    		SpeedTable[Track.NORMAL][Track.NONE] = findRule(RESTRICTING_PREFIX + NORMAL_SUFFIX);
 
     SpeedTable[Track.LIMITED][Track.DEFAULT] =
         SpeedTable[Track.LIMITED][Track.NORMAL] = findRule("R281C");
@@ -528,7 +573,8 @@ public class AspectMap
     SpeedTable[Track.LIMITED][Track.MEDIUM] = findRule("C413");
     SpeedTable[Track.LIMITED][Track.SLOW] = findRule("C414");
     SpeedTable[Track.LIMITED][Track.STOP] = findRule("R281D");
-    SpeedTable[Track.LIMITED][Track.APPROACH] = findRule("ADV_LIM");
+    SpeedTable[Track.LIMITED][Track.APPROACH] = findRule(ADV_PREFIX + LIMITED_SUFFIX);
+    SpeedTable[Track.LIMITED][Track.NONE] = findRule(RESTRICTING_PREFIX + LIMITED_SUFFIX);
 
     SpeedTable[Track.MEDIUM][Track.DEFAULT] =
         SpeedTable[Track.MEDIUM][Track.NORMAL] = findRule("R283");
@@ -536,7 +582,8 @@ public class AspectMap
     SpeedTable[Track.MEDIUM][Track.MEDIUM] = findRule("R283A");
     SpeedTable[Track.MEDIUM][Track.SLOW] = findRule("R283B");
     SpeedTable[Track.MEDIUM][Track.STOP] = findRule("R286");
-    SpeedTable[Track.MEDIUM][Track.APPROACH] = findRule("ADV_MED");
+    SpeedTable[Track.MEDIUM][Track.APPROACH] = findRule(ADV_PREFIX + MEDIUM_SUFFIX);
+    SpeedTable[Track.MEDIUM][Track.NONE] = findRule(RESTRICTING_PREFIX + MEDIUM_SUFFIX);
 
     SpeedTable[Track.SLOW][Track.DEFAULT] =
         SpeedTable[Track.SLOW][Track.NORMAL] = findRule("R287");
@@ -544,7 +591,8 @@ public class AspectMap
     SpeedTable[Track.SLOW][Track.MEDIUM] = findRule("C423");
     SpeedTable[Track.SLOW][Track.SLOW] = findRule("C424");
     SpeedTable[Track.SLOW][Track.STOP] = findRule("R288");
-    SpeedTable[Track.SLOW][Track.APPROACH] = findRule("ADV_SLO");
+    SpeedTable[Track.SLOW][Track.APPROACH] = findRule(ADV_PREFIX + SLO_SUFFIX);
+    SpeedTable[Track.SLOW][Track.NONE] = findRule(RESTRICTING_PREFIX + SLO_SUFFIX);
 
     SpeedTable[Track.STOP][Track.DEFAULT] =
         SpeedTable[Track.STOP][Track.NORMAL] = findRule("R292");
@@ -608,7 +656,20 @@ class AspectMapFactory
         return null;
       }
     }
-    // looks for the approach flag
+
+    // this provides a conversion from older panels (where there was a single
+    // Restricting indication) to the version where there is a restricting for
+    // each speed
+    if (AspectMap.RESTRICTING_TAG.equals(tag)) {
+        for (int ind = 0; ind < AspectMap.IndicationNames.length; ++ind) {
+            if (AspectMap.IndicationNames[ind][AspectMap.XML].startsWith(AspectMap.RESTRICTING_TAG)) {
+                HeadStr[ind] = new String(value);
+            }
+        }
+        return null;
+    }
+
+// looks for the approach flag
     if (AspectMap.XML_APPROACH.equals(tag)) {
       if (AspectMap.ISAPPROACH.equals(value)) {
         ApproachFlag = true;

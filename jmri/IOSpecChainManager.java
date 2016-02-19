@@ -229,6 +229,12 @@ public class IOSpecChainManager extends jmri.managers.AbstractManager {
    public int getXMLOrder(){
  	return jmri.Manager.LOGIXS;
    }
-  
+
+   @Override
+   public String getBeanTypeHandled() {
+   	// TODO Auto-generated method stub
+   	return "IOSpecChain";
+   }
+
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(IOSpecChainManager.class.getName());
 }

@@ -25,7 +25,7 @@ import java.awt.event.MouseEvent;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Copyright: Copyright (c) 2004, 2013</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -356,7 +356,7 @@ public class PanelSignal
 //        else if (state < Indication.RES) {
 //          color = PanelColor[APPROACH];
 //        }
-        if (state < AspectMap.findRule("R290")) {
+        if (state < AspectMap.findRule("R291")) {
           if (ind.showingApproach()) {
             color = ColorList.APPROACH;
           }

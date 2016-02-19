@@ -133,7 +133,7 @@ import javax.swing.Timer;
  * Description: A program for dispatching trains on Pat Lana's Crandic model
  * railroad.
  * <p>
- * Copyright: Copyright (c) 2004, 2010
+ * Copyright: Copyright (c) 2004, 2010, 2013
  * </p>
  * <p>
  * Company:
@@ -949,14 +949,14 @@ public class Block implements XMLEleObject {
 		int newState;
 		boolean wasOccupied = Blocker.get(TRK_OCCUPIED);
 		if (occupancy) {
-      if ((Discipline == APB_1) || (Discipline == APB_2)) {
+			if ((Discipline == APB_1) || (Discipline == APB_2)) {
 				checkReservation();
 			}
 			Blocker.set(TRK_OCCUPIED);
 			if (EnterEdge == null) {
 				distributeState();
 			} 
-      else { // tell only the reserved tracks that they are occupied.
+			else { // tell only the reserved tracks that they are occupied.
 				newState = determineState();
 				e = EnterEdge.makeRoute();
 				while (e.hasMoreElements()) {
@@ -964,28 +964,28 @@ public class Block implements XMLEleObject {
 					edge.Destination.setTrkState(newState);
 				}
 			}
-      if (!wasOccupied) {
-        lockTracks(true);
-      }
+			if (!wasOccupied) {
+				lockTracks(true);
+			}
 		} 
-    else {
+		else {
 			Blocker.clear(TRK_OCCUPIED);
 			distributeState();
-      lockTracks(false);
-      if (EnterEdge == null) {  // Check for a reservation that was blocked
-        resumeReservation();
-      }
-      else {
+			lockTracks(false);
+			if (EnterEdge == null) {  // Check for a reservation that was blocked
+				resumeReservation();
+			}
+			else {
 				if (Discipline == DTC) {  // this is needed to mark the warrant as satisfied
 					EnterEdge.reserveBlock(Track.DTC_RESERVATION);
 				} else if (FleetOn) {
-//					EnterEdge.reserveBlock(Track.SINGLE_MOVE);
+					//					EnterEdge.reserveBlock(Track.SINGLE_MOVE);
 				} else {
-          EnterEdge.removeOccupancy();
+					EnterEdge.removeOccupancy();
 				}
 			}
 		}
-    setApproach(occupancy);
+		setApproach(occupancy);
 	}
 
 	/**
@@ -1153,19 +1153,19 @@ public class Block implements XMLEleObject {
 		Track trk;
 		int delay;
 		int state = determineState();
-    setApproach(Blocker.get(TRK_OCCUPIED));
+		setApproach(Blocker.get(TRK_OCCUPIED));
 		for (Enumeration<Track> e = TrkList.elements(); e.hasMoreElements();) {
 			trk = e.nextElement();
 			trk.clrTrkHistory();
 			trk.setTrkState(state);
 		}
-    // Sleep a while so the serial port is not overwhelmed.
-    if ((delay = Restrictor.getAdjustment()) != 0) {
-      try {
-        Thread.sleep(delay);
-      } catch (InterruptedException e) {
-      }
-    }
+		// Sleep a while so the serial port is not overwhelmed.
+		if ((delay = Restrictor.getAdjustment()) != 0) {
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	/**

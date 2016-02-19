@@ -143,7 +143,7 @@ public class Indication {
   public Indication(int speed, int state) {
     WarnDepth = 0;
     ProtSpeed = speed;
-    NextSpeed = Track.NORMAL;
+    NextSpeed = Track.NONE;
     Composite = state;
     Advanced = false;
   }
@@ -183,7 +183,7 @@ public class Indication {
       result = AspectMap.getRule(ProtSpeed, NextSpeed);
     }
     else if (Composite == Block.TRK_AND_TIME) {
-      result = AspectMap.findRule("R290");
+      result = AspectMap.findRule("R291");
     }
     else {
       result = AspectMap.findRule("R292");
@@ -198,7 +198,7 @@ public class Indication {
    */
   public int getAdvancedIndication() {
     if (Advanced && (Composite == Block.TRK_RESERVED) &&
-        (NextSpeed != Track.STOP)) {
+        (NextSpeed != Track.STOP) && (NextSpeed != Track.NONE)) {
       return AspectMap.getRule(ProtSpeed, Track.APPROACH);
     }
     return getIndication();

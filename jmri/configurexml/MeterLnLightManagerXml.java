@@ -3,7 +3,7 @@
 package cats.jmri.configurexml;
 
 import cats.jmri.MeterLnLightManager;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Provides load and store functionality for
@@ -18,7 +18,7 @@ import org.jdom.Element;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2016</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$

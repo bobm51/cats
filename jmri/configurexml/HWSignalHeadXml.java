@@ -19,8 +19,9 @@ package cats.jmri.configurexml;
 
 import jmri.InstanceManager;
 import jmri.SignalHead;
-import org.jdom.Attribute;
-import org.jdom.Element;
+
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 import cats.jmri.HWSignalHead;
 import cats.jmri.SWSignalHead;
@@ -38,7 +39,7 @@ import cats.jmri.SWSignalHead;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2016</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -76,16 +77,16 @@ public class HWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
     return true;
   }
 
-  /**
-   * creates an HWSignalHead from a JDOM element.  This is an
-   * illegal configuration.
-   * 
-   * @param e is the Element that describes the HWSignalHead
-   * @param o is unknown.
-   */
-  public void load(Element e, Object o) throws Exception {
-    log.error("Invalid method called");
-  }
+//  /**
+//   * creates an HWSignalHead from a JDOM element.  This is an
+//   * illegal configuration.
+//   * 
+//   * @param e is the Element that describes the HWSignalHead
+//   * @param o is unknown.
+//   */
+//  public void load(Element e, Object o) throws Exception {
+//    log.error("Invalid method called");
+//  }
 
   /**
    * saves a reference to an HWSignalHead in an XML file.
@@ -106,5 +107,11 @@ public class HWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
     return element;
   }
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(HWSignalHeadXml.class.getName());
+  
+@Override
+public void load(org.jdom2.Element e, Object o) throws Exception {
+	this.load(e);
+}
+
 }
 /* @(#)HWSignalHeadXml.java */
