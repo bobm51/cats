@@ -29,7 +29,7 @@ public static final String CATS_VERSION = "2.36";
 /**
  * CATS date
  */
-public static final String CATS_DATE = "February 13, 2016";
+public static final String CATS_DATE = "February 19, 2016";
 /**
  * designer
  */
