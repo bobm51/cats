@@ -416,7 +416,7 @@ public class CPEdge
         */
         if (switchThrown) {
             try {
-                Thread.sleep(2);
+                Thread.sleep(20);
             } catch (InterruptedException e) {}
         }
 
