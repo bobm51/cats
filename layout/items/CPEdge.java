@@ -410,6 +410,16 @@ public class CPEdge
             }   
         }
 
+ /* The following sleep fixes a problem with stacking where the setupReservation always failed and 
+        the switch was therefore always moved back if it was thrown.  For a simple
+        sleep to work there must have been thread contention.
+        */
+        if (switchThrown) {
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {}
+        }
+
         if (!setupReservation()) {
             if (switchThrown) {
                 // we threw the switch and then couldn't make the reservation.  throw it back.

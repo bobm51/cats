@@ -1,7 +1,7 @@
-/* Name: SignalFrill.java
+/* Name: SignalFri ll.java
  *
  * What:
- *   This file defines a class for placing a Signal Icon on the GridTile.  test commit again
+ *   This file defines a class for placing a Signal Icon on the GridTile.
  */
 package cats.gui.frills;
 
