@@ -28,7 +28,7 @@ import cats.layout.items.IOSpecChain;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2006, 2010, 2011</p>
+ * <p>Copyright: Copyright (c) 2006, 2010, 2011, 2016</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -229,12 +229,12 @@ public class IOSpecChainManager extends jmri.managers.AbstractManager {
    public int getXMLOrder(){
  	return jmri.Manager.LOGIXS;
    }
-
-   @Override
-   public String getBeanTypeHandled() {
-   	// TODO Auto-generated method stub
-   	return "IOSpecChain";
-   }
-
+  
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(IOSpecChainManager.class.getName());
+
+@Override
+public String getBeanTypeHandled() {
+	// TODO Auto-generated method stub
+	return "IOSpecChain";
+}
 }

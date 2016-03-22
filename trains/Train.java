@@ -816,7 +816,9 @@ implements StoredObject, XMLEleObject {
 			TrainFields.setStatus(Train.TRAIN_TERMINATED);
 		}
 		TrainLab = null;
-		OperationsTrains.instance().terminateTrain(getSymbol());
+		// disable this because a train may be removed from the layout
+		// before its cars have been classified (and released)
+		//OperationsTrains.instance().terminateTrain(getSymbol());
 	}
 
 	/**

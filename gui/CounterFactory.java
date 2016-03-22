@@ -8,7 +8,6 @@
 package cats.gui;
 
 import java.util.Hashtable;
-
 import javax.swing.JMenu;
 
 import cats.layout.xml.XMLEleFactory;
@@ -23,7 +22,7 @@ import cats.layout.xml.XMLReader;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009, 2013</p>
+ * <p>Copyright: Copyright (c) 2004, 2009</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -52,9 +51,7 @@ public class CounterFactory
   private final int[][] SequenceRanges = {
       {0, 1, 2, 3, 4, 5},  // debounce (in seconds)
       {0, 10, 20, 30, 40, 50},  // delay between commands during refresh (ms)
-      {0, 10, 20, 30, 40, 50},   // Loconet (ms)
-      {0, 1, 2, 3, 4, 5},        // code line delay in seconds
-      {0, 2, 4, 6, 8, 10}        // running time in seconds
+      {0, 10, 20, 30, 40, 50}   // Loconet (ms)
   };
 
   /**
@@ -63,9 +60,7 @@ public class CounterFactory
   private final String[] SequenceLabels = {
       "Occupancy Debounce",     // debounce
       "Refresh Delay (msec)",   // refresh
-      "Loconet Governor (msec)", // Loconet
-      "Code Line Delay (seconds)", // code line
-      "Time Lock (seconds)"       // running time delay
+      "Loconet Governor (msec)" // Loconet
   };
   
   /**
@@ -74,9 +69,7 @@ public class CounterFactory
   private final int[] SequenceIndexes = {
       0,
       0,
-      1,
-      0,
-      0
+      1
   };
   
   /**
@@ -96,23 +89,10 @@ public class CounterFactory
    * is the tag for the Loconet governor
    */
   public final static String LNTAG = "LNGOVERNOR";
-  
-  /**
-   * the tag for the code line Delay
-   */
-  public final static String CODEDELAYTAG = "CODEDELAY";
-  
-  /**
-   * the tag for the time lock delay
-   */
-  public final static String TIMELOCKTAG = "TIMELOCK";
-  
   private final String[] XmlTags = {
       DEBOUNCETAG,
       REFRESHTAG,
-      LNTAG,
-      CODEDELAYTAG,
-      TIMELOCKTAG
+      LNTAG
   };
   
   /**
@@ -146,8 +126,6 @@ public class CounterFactory
     }
     exposeSequence(DEBOUNCETAG);
     exposeSequence(REFRESHTAG);
-    exposeSequence(CODEDELAYTAG);
-    exposeSequence(TIMELOCKTAG);
   }
 
 

@@ -131,7 +131,7 @@ public class Crew
     if ((null != JobAssignment) && (JobAssignment.getCrewName().equals(getCrewName()))) {
       temp = JobAssignment;
       JobAssignment = null;
-      temp.setCrew(null);
+      temp.setCrew("");
     }
     Callboard.Crews.delRecord(CrewFields);
   }
