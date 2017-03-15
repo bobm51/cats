@@ -207,10 +207,13 @@ public class CPEdge
         }
 
         //menu[2] = new String(MenuItems[2][0]);
-
-        menu[3] = new String(MenuItems[3][0]);
-        if (stackInProgress > 0) {
-            menu[4] = new String(MenuItems[3][1]);
+        
+        if ( !this.MySignal.SigName.contains ("Heavener S NB") && !this.MySignal.SigName.contains("HV Main SB")
+                && !this.MySignal.SigName.contains("HV S Entry SB")) {
+            menu[3] = new String(MenuItems[3][0]);
+            if (stackInProgress > 0) {
+                menu[4] = new String(MenuItems[3][1]);
+            }
         }
 
         switch (JListDialog.select(menu, "Traffic Operation", location)) {
@@ -365,7 +368,7 @@ public class CPEdge
         
         if (theEdge != null) { // facing point switches are handled here
             lSection = theEdge.getSection();
-        }
+        }  
         else {  
             lSection = traverse().getNeighbor().getSection(); // trailing point switches are handled here
         }
@@ -408,16 +411,16 @@ public class CPEdge
                 Screen.DispatcherPanel.mouseReleasedAction(me2);
                 switchThrown = true;
             }   
-        }
-
+        } 
+        
  /* The following sleep fixes a problem with stacking where the setupReservation always failed and 
         the switch was therefore always moved back if it was thrown.  For a simple
         sleep to work there must have been thread contention.
         */
         if (switchThrown) {
-            try {
+             try {
                 Thread.sleep(20);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {} 
         }
 
         if (!setupReservation()) {
