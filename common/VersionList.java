@@ -24,7 +24,7 @@ public class VersionList {
 /**
  * CATS
  */
-public static final String CATS_VERSION = "2.38";
+public static final String CATS_VERSION = "2.38.1";
 
 /**
  * CATS date

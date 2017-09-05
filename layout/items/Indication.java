@@ -183,7 +183,8 @@ public class Indication {
       result = AspectMap.getRule(ProtSpeed, NextSpeed);
     }
     else if (Composite == Block.TRK_AND_TIME) {
-      result = AspectMap.findRule("R290");
+      // Track and Time should set signals to stop.
+      result = AspectMap.findRule("R292");
     }
     else {
       result = AspectMap.findRule("R292");
