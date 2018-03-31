@@ -26,6 +26,7 @@ import cats.layout.store.GenericRecord;
 import cats.layout.xml.*;
 import cats.network.OperationsClient;
 import cats.rr_events.RREventManager;
+
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.WindowEvent;
@@ -33,15 +34,19 @@ import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
-import javax.swing.JOptionPane;
 
+import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
+import jmri.ConfigureManager;
+import jmri.LogixManager;
 import jmri.InstanceManager;
 import jmri.JmriException;
+import jmri.util.JmriJFrame;
+import jmri.util.swing.WindowInterface;
 
 /**
  * This is the starting point for creating the dispatcher panel.
@@ -56,7 +61,7 @@ import jmri.JmriException;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2013</p>
+ * <p>Copyright: Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2013, 2016, 2018</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -80,7 +85,7 @@ extends Apps {
    * version of CATS.  This should match the version field in the
    * designer.
    */
-  static final double LAST = new Double(VersionList.DESIGNER_VERSION).doubleValue();
+  static final double LAST = new Double(VersionList.DESIGNER_VERSION);
   
   /**
    * is the version of the panel design program used to create the XML file.
@@ -176,30 +181,40 @@ extends Apps {
    */
   private static JFrame DispPanel;
   
-//  protected void createMenus(JMenuBar menuBar, WindowInterface wi) {
-//	  super.createMenus(menuBar, wi);
-//  }
-  
-  protected void systemsMenu(JMenuBar menuBar, JFrame frame) {
-    // separate C/MRI and LocoNet menus
-    jmri.jmrix.ActiveSystemsMenu.addItems(menuBar);
+  @Override
+  protected void createMenus(JMenuBar menuBar, WindowInterface wi) {
+    super.createMenus(menuBar, wi);
+    menuBar.add(new jmri.jmris.ServerMenu());
   }
   
+  /***********************************************************
+  protected void systemsMenu(JMenuBar menuBar, JFrame frame) {
+      menuBar.add(new jmri.jmrix.ActiveSystemsMenu());
+  }
+ ****************************************************************/
+  
+  @Override
   protected String line1() {
     return MessageFormat.format("Generic Dispatcher Panel, based on JMRI {0}",
         new Object[] {jmri.Version.name()});
   }
   
+  @Override
   protected String line2() {
-    return "http://home.comcast.net/~kb0oys";
+    return "http://cats4ctc.org";
   }
   
+    /**
+     *
+     * @return
+     */
+    @Override
   protected String logo() {
     return "crandic.gif";
   }
   
-  Crandic(JFrame p) {
-    super(p);
+  Crandic() {
+    super();
     log.debug("CTOR done");
     XMLReader.registerFactory(DocumentTag, new DocumentFactory());
   }
@@ -214,13 +229,15 @@ extends Apps {
     
     // show splash screen early
     splash(true);
+    Apps.setStartupInfo("CATS");
 
-    initLog4J();
-    log.info(apps.Apps.startupInfo("JMRI"));
+//    initLog4J();
+//    log.info(apps.Apps.startupInfo("JMRI"));
     log.info("CATS version " + VersionList.CATS_VERSION);
     setConfigFilename("SimpleConfig2.xml", args);
-    JFrame f = new JFrame("CTC Panel");
-    createFrame(new Crandic(f), f);
+    Crandic crandic = new Crandic();
+    JmriJFrame f = new JmriJFrame("CTC Panel");
+    createFrame(crandic, f);
     
     log.info("main initialization done");
     splash(false);
@@ -269,23 +286,16 @@ extends Apps {
       DispPanel.setJMenuBar(MyPanel.createMenus());
       DispPanel.setContentPane(MyPanel);
       DispPanel.addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-          int result = JOptionPane.showConfirmDialog( (Component)null,
-              "Do you really want to end the session?",
-              "Choose yes or no",
-              JOptionPane.YES_NO_OPTION
-          );
-          if (result ==JOptionPane.YES_OPTION) {
-            Logger.finishUp();
-            System.exit(0);
-          }
+        @Override
+        public void windowClosed(WindowEvent e) {
+        	Logger.finishUp();
         }
       });
       MyPanel.addComponentListener(new Resizer());
       FontFactory.Fonts = new FontFactory(f.getFont());
       FontList.setFontFamily(MyPanel.getFont());
       FontList.instance();
-    OperationsClient.instance();
+      OperationsClient.instance();
       FastClock.TheClock = new FastClock();
       Hours.HourStore = new Hours();
       FieldInfo.init(GenericRecord.EDITRECORD);
@@ -328,8 +338,10 @@ extends Apps {
    * Dispatch Thread.
    * @param layout is the XML file that describes the dispatcher panel.
    */
+  @SuppressWarnings("Convert2Lambda")
   private static void initializePanel(final String layout) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         Screen.init(new File(layout));
       }
@@ -349,6 +361,16 @@ extends Apps {
    */
   public static void saveCursor() {
     MyCursor = DispPanel.getCursor();
+  }
+
+  /**
+   * confirms that the user wants to end the session and
+   * if affirmative, kills the Java VM
+   */
+  static public void terminateSession() {
+	  if (handleQuit()) {
+		  System.out.println("CATS shutting down");		  
+	  }
   }
   
   class DocumentFactory
@@ -375,6 +397,7 @@ extends Apps {
      * its contents can be set from the information in an XML Element
      * description.
      */
+    @Override
     public void newElement() {
     }
     
@@ -387,11 +410,13 @@ extends Apps {
      * @return null if the tag:value are accepted; otherwise, an error
      * string.
      */
+    @Override
+    @SuppressWarnings("ConvertToStringSwitch")
     public String addAttribute(String tag, String value) {
       if (VersionTag.equals(tag)) {
         double v;
         Version = new String(value);
-        v = new Double(Version).doubleValue();
+        v = Double.parseDouble(Version);
         if ( (v < Crandic.EARLY) || (v > Crandic.LAST)) {
           JOptionPane.showMessageDialog( (Component)null,
               "The XML file may not be the correct format for this version of CATS.",
@@ -445,17 +470,26 @@ extends Apps {
         }
       }
       else if (IncludeFileTag.equals(tag)) {
-        URL pURL = InstanceManager.configureManagerInstance().find(value);
-        if (pURL!=null) {
-          try {
-          InstanceManager.configureManagerInstance().load(pURL);
-		} catch (JmriException e) {
-	      log.warn("failed to load config file");
-		}
-        }
-        else {
-          log.warn("Could not find "+value+" config file");
-        }
+    	  // Much of this is based on the JMRI LoadXmlConfigAction.loadFile
+    	  //        URL pURL = InstanceManager.configureManagerInstance().find(value);
+    	  boolean results = false;
+    	  URL pURL = InstanceManager.getNullableDefault(ConfigureManager.class).find(value);
+    	  if (pURL!=null) {
+    		  try {
+    			  //          InstanceManager.configureManagerInstance().load(pURL);
+    			  results = InstanceManager.getDefault(ConfigureManager.class).load(pURL);
+    			  if (results) {
+    				  InstanceManager.getDefault(LogixManager.class).activateAllLogixs();
+                      InstanceManager.getDefault(jmri.jmrit.display.layoutEditor.LayoutBlockManager.class).initializeLayoutBlockPaths();
+                      new jmri.jmrit.catalog.configurexml.DefaultCatalogTreeManagerXml().readCatalogTrees();
+    			  }
+    		  } catch (JmriException e) {
+    			  log.warn("failed to load " + value + " JMRI panel file");
+    		  }
+    	  }
+    	  else {
+    		  log.warn("Could not find "+value+" JMRI panel file");
+    	  }
       }
       else {
       return new String(tag + " is not an attribute for a " +
@@ -471,6 +505,7 @@ extends Apps {
      * @return the newly created XMLEleObject or null (if there was a problem
      * in creating it).
      */
+    @Override
     public XMLEleObject getObject() {
       return this;
     }
@@ -483,6 +518,7 @@ extends Apps {
      * @return if the value is acceptable, then null; otherwise, an error
      * string.
      */
+    @Override
     public String setValue(String eleValue) {
       return new String(DocumentTag + " cannot have a text field (" +
           eleValue + ").");
@@ -497,6 +533,7 @@ extends Apps {
      * @return null if the Object is acceptible or an error String
      * if it is not.
      */
+    @Override
     public String setObject(String objName, Object objValue) {
       return null;
     }
@@ -507,6 +544,7 @@ extends Apps {
      * @return the name by which XMLReader knows the XMLEleObject (the
      * Element tag).
      */
+    @Override
     public String getTag() {
       return new String(DocumentTag);
     }
@@ -518,6 +556,7 @@ extends Apps {
      * @return null, if it has received everything it needs or an error
      * string if something isn't correct.
      */
+    @Override
     public String doneXML() {
       if (adjustScreen) {
         JRootPane jrp = DispPanel.getRootPane();

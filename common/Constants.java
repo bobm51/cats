@@ -64,7 +64,7 @@ public class Constants {
   /**
    * is the double quote character, double quoted
    */
-  public final static String QUOTE = new String("\"");
+  public final static String QUOTE = "\"";
   
   /**
    * is the FS with a quote on either side

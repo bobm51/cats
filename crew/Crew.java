@@ -111,6 +111,7 @@ public class Crew
    *
    * @param description is the GenericRecord describing the Object.
    */
+  @Override
   public void linkDescription(GenericRecord description) {
     CrewFields = description;
     String trainName = new String((String) description.findValue(TRAIN_ID)).trim();
@@ -125,6 +126,7 @@ public class Crew
    * clean up any associations it has with other Objects, then remove it
    * description from its Store.
    */
+  @Override
   public void destructor() {
     Job temp;
     trainChange(null);
@@ -141,6 +143,7 @@ public class Crew
    *
    * @param description is the updated GenericRecord describing the Object.
    */
+  @Override
   public void updateDescription(GenericRecord description) {
     String fieldTag;
     FieldPair newPair;
@@ -310,6 +313,7 @@ public class Crew
    * values (and tags) it wants to expose.
    * @return a String containing "tag=value" substrings.
    */
+  @Override
   public String getHiddenValues() {
     return "";
   }

@@ -272,7 +272,7 @@ public class SWSignalHead extends DefaultSignalHead {
    */
   static public String createSignalHeadName()
   {
-    SignalHeadManager shm = InstanceManager.signalHeadManagerInstance();
+    SignalHeadManager shm = InstanceManager.getDefault(jmri.SignalHeadManager.class);
     SignalHead s;
     String name = CATS_SIGNALHEAD + (NextID++);
     while (((s = shm.getSignalHead(name)) != null) && (s.getUserName() != null)) {

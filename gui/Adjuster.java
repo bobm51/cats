@@ -47,7 +47,7 @@ public class Adjuster
   /**
    * is the Bean for alerting listeners when the selection changes.
    */
-  private PropertyChangeSupport AdjusterBean;
+  private final PropertyChangeSupport AdjusterBean;
   
   /**
    * constructs the menu items and initializes the Adjust value.  The
@@ -60,6 +60,7 @@ public class Adjuster
    * @param first is the initial value.
    * @param xmlTag is the tag of the counter in the XML file
    */
+  @SuppressWarnings("OverridableMethodCallInConstructor")
   public Adjuster(String label, int lower, int upper, int first,
           String xmlTag) {
       super(label);
@@ -74,6 +75,7 @@ public class Adjuster
    * @param listener is the object that wants to be notified when the
    * value changes.
    */
+  @Override
   public void registerAdjustmentListener(PropertyChangeListener listener) {
     AdjusterBean.addPropertyChangeListener(listener);
   }
@@ -83,6 +85,7 @@ public class Adjuster
    *
    * @return the selected numeric value.
    */
+  @Override
   public int getAdjustment() {
     return AdjustIndex + Lowest;
   }
@@ -119,9 +122,11 @@ public class Adjuster
      * 
      * @param value is the new value of the adjuster.
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public AdjustClass(int value) {
       MySetting = value;
       addActionListener(new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent e) {
           // Enable the current selection.
           Selections[AdjustIndex].setEnabled(true);

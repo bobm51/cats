@@ -32,6 +32,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -44,7 +45,7 @@ import javax.swing.filechooser.FileFilter;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009, 2011</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2011, 2016</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -390,15 +391,14 @@ public class DispPanel
     jMenuItem = new JMenuItem("Exit");
     jMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        int result = JOptionPane.showConfirmDialog( (Component)null,
-            "Do you really want to end the session?",
-            "Choose yes or no",
-            JOptionPane.YES_NO_OPTION
-            );
-        if (result ==JOptionPane.YES_OPTION) {
-          Logger.finishUp();
-          System.exit(0);
-        }
+    	  int result = JOptionPane.showConfirmDialog( (Component)null,
+    			  "Do you really want to end the session?",
+    			  "Choose yes or no",
+    			  JOptionPane.YES_NO_OPTION
+    			  );
+    	  if (result ==JOptionPane.YES_OPTION) {
+        	  Crandic.terminateSession();
+    	  }
       }
     });
     jMenu.add(jMenuItem);
