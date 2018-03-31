@@ -19,6 +19,7 @@ package cats.jmri.configurexml;
 
 import jmri.InstanceManager;
 import jmri.SignalHead;
+import jmri.configurexml.JmriConfigureXmlException;
 
 import org.jdom2.Attribute;
 import org.jdom2.Element;
@@ -52,7 +53,7 @@ public class HWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
    * 
    * @param e is the Element that describes the HWSignalHead
    */
-  public boolean load(Element e) throws Exception {
+  public boolean load(Element e) throws JmriConfigureXmlException {
     Attribute u = e.getAttribute("userName");
     Attribute s = e.getAttribute("systemName");
     SignalHead h;
@@ -73,7 +74,7 @@ public class HWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
         h = new HWSignalHead(s.getValue(), u.getValue());        
       }
     }
-    InstanceManager.signalHeadManagerInstance().register(h);
+    InstanceManager.getDefault(jmri.SignalHeadManager.class).register(h);
     return true;
   }
 
@@ -109,7 +110,7 @@ public class HWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(HWSignalHeadXml.class.getName());
   
 @Override
-public void load(org.jdom2.Element e, Object o) throws Exception {
+public void load(org.jdom2.Element e, Object o) throws JmriConfigureXmlException {
 	this.load(e);
 }
 

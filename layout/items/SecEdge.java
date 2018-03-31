@@ -122,7 +122,7 @@ import java.awt.Point;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2016</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -650,27 +650,27 @@ public class SecEdge
     return null;
   }
 
-  /**
-   * computes the speed limit across the Block.
-   *
-   * @param limit is the Indication holding the speed limit through the
-   * protected block(s) and the next block(s)
-   */
-  protected void getSpeedLimit(Indication limit) {
-    int prot = Destination.getSpeed();
-    int next = Track.STOP;
-    SecEdge enterEdge = this;
-    SecEdge exitEdge;
-
-    do {
-      prot = Track.getSlower(prot, enterEdge.Destination.getSpeed());
-    }
-    while ( ( (exitEdge = enterEdge.traverse()) != null) &&
-           ( (enterEdge = exitEdge.getNeighbor()) != null) &&
-           !enterEdge.hasSignal());
-    limit.setProtectedSpeed(prot);
-    limit.setNextSpeed(next);
-  }
+//  /**
+//   * computes the speed limit across the Block.
+//   *
+//   * @param limit is the Indication holding the speed limit through the
+//   * protected block(s) and the next block(s)
+//   */
+//  protected void getSpeedLimit(Indication limit) {
+//    int prot = Destination.getSpeed();
+//    int next = Track.STOP;
+//    SecEdge enterEdge = this;
+//    SecEdge exitEdge;
+//
+//    do {
+//      prot = Track.getSlower(prot, enterEdge.Destination.getSpeed());
+//    }
+//    while ( ( (exitEdge = enterEdge.traverse()) != null) &&
+//           ( (enterEdge = exitEdge.getNeighbor()) != null) &&
+//           !enterEdge.hasSignal());
+//    limit.setProtectedSpeed(prot);
+//    limit.setNextSpeed(next);
+//  }
 
   /*
    * tells the sub-component where its Section is, so that the sub-component

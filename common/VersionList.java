@@ -14,7 +14,7 @@ package cats.common;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2009, 2010, 2011, 2012, 2013, 2016</p>
+ * <p>Copyright: Copyright (c) 2009, 2010, 2011, 2012, 2013, 2016, 2018</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -24,12 +24,12 @@ public class VersionList {
 /**
  * CATS
  */
-public static final String CATS_VERSION = "2.38.1";
+public static final String CATS_VERSION = "2.39";
 
 /**
  * CATS date
  */
-public static final String CATS_DATE = "March 24, 2017";
+public static final String CATS_DATE = "March 31, 2018";
 /**
  * designer
  */

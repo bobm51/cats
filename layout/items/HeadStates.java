@@ -155,7 +155,7 @@ implements XMLEleObject {
       MyHead = (SWFlashing) ? 
           new SWSignalHead(SWSignalHead.createSignalHeadName()) : 
             new HWSignalHead(SWSignalHead.createSignalHeadName());
-          InstanceManager.signalHeadManagerInstance().register(MyHead);
+          InstanceManager.getDefault(jmri.SignalHeadManager.class).register(MyHead);
     }
     else if (UserName != null) {
       if (sysName == null) {
@@ -163,7 +163,7 @@ implements XMLEleObject {
           MyHead = (SWFlashing) ? 
               new SWSignalHead(SWSignalHead.createSignalHeadName(), UserName):
                 new HWSignalHead(SWSignalHead.createSignalHeadName(), UserName);
-              InstanceManager.signalHeadManagerInstance().register(MyHead);
+              InstanceManager.getDefault(jmri.SignalHeadManager.class).register(MyHead);
         }
       }
       else {
@@ -171,14 +171,14 @@ implements XMLEleObject {
             ((MyHead =JmriPrefixManager.findHead(sysName)) == null)) {
           MyHead = (SWFlashing) ? new SWSignalHead(sysName, UserName):
             new HWSignalHead(sysName, UserName);
-          InstanceManager.signalHeadManagerInstance().register(MyHead);              
+          InstanceManager.getDefault(jmri.SignalHeadManager.class).register(MyHead);              
         }
       }          
     }
     else if ((MyHead = JmriPrefixManager.findHead(sysName)) == null) {
       MyHead = (SWFlashing) ? new SWSignalHead(sysName):
         new HWSignalHead(sysName);
-      InstanceManager.signalHeadManagerInstance().register(MyHead);            
+      InstanceManager.getDefault(jmri.SignalHeadManager.class).register(MyHead);            
     }
     
     if ((this.size() != 0) && (MyHead != null) &&

@@ -48,6 +48,7 @@ extends AbstractStore {
   /**
    * The Tag for identifying the CrewStore in the XML file.
    */
+  @SuppressWarnings("FieldNameHidesFieldInSuperclass")
   private static final String XML_TAG = "CREWSTORE";
 
   /**
@@ -153,6 +154,7 @@ extends AbstractStore {
    * @param prop is the initial Field keys.
    *
    */
+  @SuppressWarnings("OverridableMethodCallInConstructor")
   public Callboard(String sTag, String fTag, String rTag, FieldInfo[] prop) {
     super(sTag, fTag, rTag, prop);
     //    XML_TAG = sTag;
@@ -350,6 +352,7 @@ extends AbstractStore {
    *
    * @return null - nothing is being tested.
    */
+  @Override
   public String checkConsistency(CatsTableModel model) {
     //    int recordCount = model.getRowCount();
     //    int col;
@@ -412,6 +415,7 @@ extends AbstractStore {
    * that have the visible property set.  The order of its elements
    * dictates the order that the record fields are placed in the JTable. 
    */
+  @Override
   public void editData() {
     //    RecordTableModel model;
     //    Visible = Fields.getVisibleInfos();
@@ -497,8 +501,11 @@ extends AbstractStore {
     trial.setStrategy(new CrewSelectionStrategy(trial));
     FieldPair pair;
     GenericRecord rec;
+    @SuppressWarnings("UnusedAssignment")
     boolean enableOnDuty = false;
+    @SuppressWarnings("UnusedAssignment")
     boolean enableOffDuty = false;
+    @SuppressWarnings("UnusedAssignment")
     boolean enableLeft = false;
     int now = TimeSpec.currentTime();
     int law = Hours.getHours();
@@ -567,6 +574,7 @@ extends AbstractStore {
    * 
    * @param rec is the GenericRecord containing the FieldPairs
    */
+  @Override
   protected void removeSpecialPairs(GenericRecord rec) {
     FieldPair onDutyPair = rec.findPair(Crew.TIME_ON_DUTY);
     if (onDutyPair != null) {
@@ -628,6 +636,7 @@ extends AbstractStore {
      * @param field is the JTable column name of the field
      * @return true
      */
+    @Override
     public boolean isEditable(GenericRecord rec, String field) {
       Crew so;
       if (Crew.TRAIN_ID.equals(field)) {

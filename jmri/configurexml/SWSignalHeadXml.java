@@ -24,6 +24,7 @@ import cats.jmri.SWSignalHead;
 
 import jmri.InstanceManager;
 import jmri.SignalHead;
+import jmri.configurexml.JmriConfigureXmlException;
 
 /**
  * Provides load and store functionality for
@@ -51,7 +52,7 @@ public class SWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
    * 
    * @param e is the Element that describes the SWSignalHead
    */
-  public boolean load(Element e) throws Exception {
+  public boolean load(Element e) throws JmriConfigureXmlException {
     Attribute u = e.getAttribute("userName");
     Attribute s = e.getAttribute("systemName");
     SignalHead h;
@@ -72,7 +73,7 @@ public class SWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
         h = new SWSignalHead(s.getValue(), u.getValue());        
       }
     }
-    InstanceManager.signalHeadManagerInstance().register(h);
+    InstanceManager.getDefault(jmri.SignalHeadManager.class).register(h);
     return true;
   }
 
@@ -83,7 +84,7 @@ public class SWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
    * @param e is the Element that describes the SWSignalHead
    * @param o is unknown.
    */
-  public void load(Element e, Object o) throws Exception {
+  public void load(Element e, Object o) throws JmriConfigureXmlException {
     log.error("Invalid method called");
   }
 

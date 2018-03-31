@@ -127,23 +127,15 @@ implements LocoNetListener {
     }
     return (num);
   } 
-  /**
-   * Public method to validate system name for configuration
-   * @param systemName is the string being tested.
-   *
-   * @return 'true' if system name has a valid meaning in current configuration,
-   *      else returns 'false'
-   */
+  
+  @Override
   public boolean validSystemNameConfig(String systemName) {
-    return validSystemNameFormat(systemName);
+    return true;
   }
   
-  /**
-   * Public method to validate system name format
-   *   returns 'true' if system name has a valid format, else returns 'false'
-   */
-  public boolean validSystemNameFormat(String systemName) {
-    return (getBitFromSystemName(systemName)!=0);
+  @Override
+  public NameValidity validSystemNameFormat(String systemName) {
+    return NameValidity.VALID;
   }
 
   /**

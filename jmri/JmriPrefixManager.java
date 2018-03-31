@@ -197,7 +197,7 @@ public class JmriPrefixManager {
    * @return the SignalHead for the address.
    */
   public static SignalHead findHead(String name) {
-    SignalHeadManager shm = InstanceManager.signalHeadManagerInstance();
+    SignalHeadManager shm = InstanceManager.getDefault(jmri.SignalHeadManager.class);
     if (shm != null) {
       return shm.getSignalHead(name);
     }
