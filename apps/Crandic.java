@@ -215,7 +215,7 @@ extends Apps {
      */
     @Override
   protected String logo() {
-    return "";
+    return "crandic.gif";
   }
   
   Crandic() {
