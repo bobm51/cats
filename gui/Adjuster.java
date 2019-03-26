@@ -26,6 +26,7 @@ import javax.swing.JMenuItem;
  * @author Rodney Black
  * @version $Revision$
  */
+@SuppressWarnings("serial")
 public class Adjuster
     extends Sequence {
 
@@ -60,7 +61,6 @@ public class Adjuster
    * @param first is the initial value.
    * @param xmlTag is the tag of the counter in the XML file
    */
-  @SuppressWarnings("OverridableMethodCallInConstructor")
   public Adjuster(String label, int lower, int upper, int first,
           String xmlTag) {
       super(label);
@@ -122,7 +122,6 @@ public class Adjuster
      * 
      * @param value is the new value of the adjuster.
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public AdjustClass(int value) {
       MySetting = value;
       addActionListener(new ActionListener() {

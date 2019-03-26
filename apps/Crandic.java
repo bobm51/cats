@@ -21,6 +21,7 @@ import cats.gui.Screen;
 import cats.gui.store.ClassSpec;
 import cats.jmri.JmriName;
 import cats.jmri.JmriPrefixManager;
+import cats.layout.ColorList;
 import cats.layout.FastClock;
 import cats.layout.FontList;
 import cats.layout.Hours;
@@ -71,6 +72,7 @@ import jmri.util.swing.WindowInterface;
  * @author Rodney Black
  * @version $Revision$
  */
+@SuppressWarnings("serial")
 public class Crandic
 extends Apps {
   
@@ -297,6 +299,7 @@ extends Apps {
         }
       });
       MyPanel.addComponentListener(new Resizer());
+      ColorList.instance();
       FontFactory.Fonts = new FontFactory(f.getFont());
       FontList.setFontFamily(MyPanel.getFont());
       FontList.instance();
@@ -343,7 +346,6 @@ extends Apps {
    * Dispatch Thread.
    * @param layout is the XML file that describes the dispatcher panel.
    */
-  @SuppressWarnings("Convert2Lambda")
   private static void initializePanel(final String layout) {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
@@ -416,7 +418,6 @@ extends Apps {
      * string.
      */
     @Override
-    @SuppressWarnings("ConvertToStringSwitch")
     public String addAttribute(String tag, String value) {
       if (VersionTag.equals(tag)) {
         double v;

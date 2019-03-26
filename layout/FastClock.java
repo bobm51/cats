@@ -27,7 +27,7 @@ import jmri.Timebase;
  *  false if the real time clock is used.
  * <p>Title: designer</p>
  * <p>Description: A program for designing dispatcher panels</p>
- * <p>Copyright: Copyright (c) 2005</p>
+ * <p>Copyright: Copyright (c) 2005, 2018</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version 1.0
@@ -102,7 +102,7 @@ public class FastClock
     UsingLayout = source;
     if (UsingLayout) {
       if (LayoutClock == null) {
-        LayoutClock = InstanceManager.timebaseInstance();
+        LayoutClock = InstanceManager.getDefault(jmri.Timebase.class);
         if (LayoutClock == null) {
           JOptionPane.showMessageDialog( (Component)null,
               "No fast clock was detected.  Be sure to start one.",
@@ -137,7 +137,7 @@ public class FastClock
     if (RecordedTOD == null) {
       if (UsingLayout) {
         if (LayoutClock == null) {
-          if ( (LayoutClock = InstanceManager.timebaseInstance()) == null) {
+          if ( (LayoutClock = InstanceManager.getDefault(jmri.Timebase.class)) == null) {
             return Calendar.getInstance().getTime();
           }
         }

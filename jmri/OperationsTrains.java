@@ -61,6 +61,11 @@ import cats.trains.TrainStore;
  */
 public class OperationsTrains {
 
+	/**
+	 * taken from Operations
+	 */
+	final String REQUEST_DELIMITER = " , ";
+	
   /**
    * creates the checkbox under Appearance->Trace Items for controlling tracing
    */
@@ -291,7 +296,7 @@ public class OperationsTrains {
    * @param response is the message from Operations
    */
   public void processOperationsResponse(String response) {
-    ArrayList<Attribute> responses = jmri.jmris.simpleserver.SimpleOperationsServer.parseOperationsMessage(response);
+    ArrayList<Attribute> responses = parseOperationsMessage(response);
     String trainName = null;
     String tag;
     String value;
@@ -330,6 +335,41 @@ public class OperationsTrains {
     }
   }
   
+  /**
+   * taken from Operations before it is deprecated
+   * @param message is the message from operations
+   * @return an ArrayList containing the message as pairs
+   */
+  public ArrayList<Attribute> parseOperationsMessage(String message) {
+      ArrayList<Attribute> contents = new ArrayList<Attribute>();
+      int start;
+      int end;
+      int equals;
+      String request;
+      if ((message != null) && message.startsWith(jmri.jmris.simpleserver.SimpleOperationsServer.OPERATIONS)) {
+          for (start = message.indexOf(REQUEST_DELIMITER);
+                  start > 0;
+                  start = end) {  // step through all the requests/responses in the message
+              start += REQUEST_DELIMITER.length();
+              end = message.indexOf(REQUEST_DELIMITER, start);
+              if (end > 0) {
+                  request = message.substring(start, end);
+              } else {
+                  request = message.substring(start, message.length());
+              }
+
+              //convert a request/response to an Attribute and add it to the result
+              equals = request.indexOf(jmri.jmris.simpleserver.SimpleOperationsServer.FIELDSEPARATOR);
+              if ((equals > 0) && (equals < (request.length() - 1))) {
+                  contents.add(new Attribute(request.substring(0, equals), request.substring(equals + 1, request.length())));
+              } else {
+                  contents.add(new Attribute(request, null));
+              }
+          }
+      }
+      return contents;
+  }
+
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(OperationsTrains.class.getName());
 }
 /* @(#)OperationsTrains.java */

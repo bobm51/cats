@@ -36,14 +36,16 @@ public class TrainPicker
    * is the list of Train identities.  The identities are fields extracted
    * from the GenericRecords that match the criteria.
    */
-  private JList Trains;
+  @SuppressWarnings("rawtypes")
+private JList Trains;
 
   /**
    * constructs the body of the selection list.
    *
    * @param list is a Vector of Trains that meet the selection criteria.
    */
-  public TrainPicker(Vector<Train> list) {
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+public TrainPicker(Vector<Train> list) {
     Vector<String> ids = new Vector<String>(list.size());
     JScrollPane jsp;
     Train t;

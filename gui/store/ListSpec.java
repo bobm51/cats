@@ -110,8 +110,10 @@ protected Vector<String> createList(Vector<?> vec, String tag) {
    *
    * @return the editor.
    */
-  public DefaultCellEditor getCellEditor() {
-    JComboBox combo = new JComboBox(createSpecificList());
+  @SuppressWarnings("rawtypes")
+public DefaultCellEditor getCellEditor() {
+    @SuppressWarnings("unchecked")
+	JComboBox combo = new JComboBox(createSpecificList());
     return new DefaultCellEditor(combo);
   }
 
@@ -145,6 +147,7 @@ protected Vector<String> createList(Vector<?> vec, String tag) {
 /**
  * is an inner class for handling the Crew Selection via a JComboBox.
  */
+@SuppressWarnings("rawtypes")
 class ComboRenderer
     extends JComboBox
     implements TableCellRenderer {
@@ -159,7 +162,8 @@ class ComboRenderer
    *
    * @param list is a Vector of crew names.
    */
-  public ComboRenderer(Vector<?> list) {
+  @SuppressWarnings("unchecked")
+public ComboRenderer(Vector<?> list) {
     super(list);
     MyList = list;
   }

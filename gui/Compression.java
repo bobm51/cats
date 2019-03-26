@@ -22,6 +22,7 @@ package cats.gui;
  * @version $Revision$
  */
 
+@SuppressWarnings("serial")
 public class Compression
 extends BooleanGui {
   /**

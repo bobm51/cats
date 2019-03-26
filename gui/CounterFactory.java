@@ -27,6 +27,7 @@ import cats.layout.xml.XMLReader;
  * @author Rodney Black
  * @version $Revision$
  */
+@SuppressWarnings("serial")
 public class CounterFactory
     extends JMenu implements XMLEleFactory, XMLEleObject {
   

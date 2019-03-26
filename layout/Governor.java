@@ -13,6 +13,7 @@
 package cats.layout;
 
 import jmri.jmrix.loconet.LocoNetMessage;
+import cats.jmri.MeterLnTrafficController;
 import jmri.jmrix.loconet.LnTrafficController;
 
 /**
@@ -69,14 +70,13 @@ public class Governor
    *
    * Special Considerations:
    */
-  @SuppressWarnings("deprecation")
-public void run() {
+  public void run() {
     LocoNetMessage msg;
     LnTrafficController ltc;
 
     while (true) {
       msg = (LocoNetMessage) LocoQue.get();
-      ltc = LnTrafficController.instance();
+      ltc = MeterLnTrafficController.getTrafficController();
       if (ltc.isXmtBusy()) {
         System.out.println("Loconet is busy");
       }

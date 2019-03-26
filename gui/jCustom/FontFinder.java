@@ -24,7 +24,7 @@ import cats.layout.FontList;
  *
  * <p>Title: designer</p>
  * <p>Description: A program for designing dispatcher panels</p>
- * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Copyright: Copyright (c) 2009, 2019</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -103,8 +103,10 @@ public class FontFinder {
      * @return a JComboBox over FontList, with the active font
      * preselected.
      */
-    public JComboBox createFinder() {
-        JComboBox box = new JComboBox(FontList.instance().getListList());
+    @SuppressWarnings("rawtypes")
+	public JComboBox createFinder() {
+        @SuppressWarnings("unchecked")
+		JComboBox box = new JComboBox(FontList.instance().getListList());
         box.setSelectedItem(getFontName());
         return box;
     }

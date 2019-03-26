@@ -23,7 +23,7 @@ import cats.layout.ColorList;
  *
  * <p>Title: designer</p>
  * <p>Description: A program for designing dispatcher panels</p>
- * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Copyright: Copyright (c) 2009, 2019</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -89,8 +89,10 @@ public class ColorFinder {
      * @return a JComboBox over ColorList, with the active color
      * preselected.
      */
-    public JComboBox createFinder() {
-        JComboBox box = new JComboBox(ColorList.instance().getListList());
+    @SuppressWarnings("rawtypes")
+	public JComboBox createFinder() {
+        @SuppressWarnings("unchecked")
+		JComboBox box = new JComboBox(ColorList.instance().getListList());
         box.setSelectedItem(getColorName());
         return box;
     }

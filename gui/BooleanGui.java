@@ -27,6 +27,7 @@ import javax.swing.JCheckBoxMenuItem;
  * @version $Revision$
  */
 
+@SuppressWarnings("serial")
 public class BooleanGui extends JCheckBoxMenuItem implements ActionListener,
 XMLEleObject, XMLEleFactory {
 

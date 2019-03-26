@@ -8,9 +8,14 @@ import cats.gui.Sequence;
 import cats.layout.Governor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
+
+import jmri.InstanceManager;
+import jmri.jmrix.SystemConnectionMemo;
 import jmri.jmrix.loconet.LnTrafficController;
 import jmri.jmrix.loconet.LocoNetListener;
 import jmri.jmrix.loconet.LocoNetMessage;
+import jmri.jmrix.loconet.LocoNetSystemConnectionMemo;
 
 /**
  * MeterLnTrafficController.java
@@ -50,6 +55,11 @@ public class MeterLnTrafficController
   static protected MeterLnTrafficController Meter;
 
   /**
+   * is the LnTrafficController being decorated
+   */
+  static private LnTrafficController DecoratedController;
+  
+  /**
    * Create a LnTrafficController which meters its output.
    */
   public MeterLnTrafficController() {
@@ -65,6 +75,7 @@ public class MeterLnTrafficController
           CounterFactory.LNTAG);
       CounterFactory.CountKeeper.exposeSequence(CounterFactory.LNTAG);
       FlowRate.registerAdjustmentListener(this);
+      DecoratedController = findLNController();
     }
   }
 
@@ -93,9 +104,8 @@ public class MeterLnTrafficController
    *
    * @return true if there is a LnTrafficController, somewhere.
    */
-  @SuppressWarnings("deprecation")
 public boolean status() {
-    return LnTrafficController.instance() != null;
+    return DecoratedController != null;
   }
   
   /**
@@ -128,6 +138,41 @@ public boolean status() {
     }
   }
 
+	/**
+	 * a utility for finding a Loconet Traffic Controller that can be
+	 * used for signaling.  Three situations need to be considered:
+	 * <ol>
+	 * <li>no Loconet connection - in which case null is returned</li>
+	 * <li>only one Loconet connection - in which case, it is returned</li>
+	 * <li>multiple Loconet connections - in which case the one with a "L" system prefix is returned.
+	 * If there is no "L" system prefix, the first is returned.
+	 * </ol>
+	 * @return an instance of an LnTrafficController or null
+	 */
+	static public LnTrafficController findLNController() {
+		List<LocoNetSystemConnectionMemo> list = InstanceManager.getList(LocoNetSystemConnectionMemo.class);
+		if (list.isEmpty()) {
+			log.fatal("No Loconet connection was detected");
+			return null;
+		}
+		if (list.size() == 1) {
+			return list.get(0).getLnTrafficController();
+		}
+		for (Object memo : list) {
+			if ("L".equals(((SystemConnectionMemo) memo).getSystemPrefix())) {
+				return ((LocoNetSystemConnectionMemo) memo).getLnTrafficController();
+			}
+		}
+		return list.get(0).getLnTrafficController();
+	}
+	
+	/**
+	 * retrieve the LnTrafficController
+	 * @return LnTrafficController being used
+	 */
+	static public LnTrafficController getTrafficController() {
+		return DecoratedController;
+	}
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
       MeterLnTrafficController.class.getName());
 }
