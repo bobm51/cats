@@ -12,6 +12,7 @@
  */
 package cats.layout;
 
+import cats.jmri.MeterLnTrafficController;
 import cats.rr_events.LoconetEvent;
 import cats.rr_events.RREventManager;
 import java.util.Enumeration;
@@ -83,8 +84,7 @@ implements LocoNetListener {
    * is the class constructor
    */
   private MsgFilter() {
-    @SuppressWarnings("deprecation")
-	LnTrafficController ltc = LnTrafficController.instance();
+	LnTrafficController ltc = MeterLnTrafficController.findLNController();
     if (ltc == null) {
       log.error("No Loconet interface has been defined");
     }

@@ -33,6 +33,7 @@ import cats.layout.items.IOSpecChain;
  * @author Rodney Black
  * @version $Revision$
  */
+@SuppressWarnings("rawtypes")
 public class IOSpecChainManager extends jmri.managers.AbstractManager {
   
   ArrayList<IOSpecChain> Chains;

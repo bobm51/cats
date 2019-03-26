@@ -95,17 +95,22 @@ public class HWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
    * @param o is the HWSignalHead.
    */
   public Element store(Object o) {
-    HWSignalHead p = (HWSignalHead)o;
+	    HWSignalHead p = (HWSignalHead)o;
 
-    Element element = new Element("signalhead");
-    element.setAttribute("class", this.getClass().getName());
+	    Element element = new Element("signalhead");
+	    element.setAttribute("class", this.getClass().getName());
 
-    // include contents
-    element.setAttribute("systemName", p.getSystemName());
-    if (p.getUserName() != null) {
-      element.setAttribute("userName", p.getUserName());
-    }
-    return element;
+//	    // include contents
+//	    element.setAttribute("systemName", p.getSystemName());
+//	    if (p.getUserName() != null) {
+//	      element.setAttribute("userName", p.getUserName());
+//	    }
+	    // include contents
+	    element.addContent(new Element("systemName").addContent(p.getSystemName()));
+
+	    storeCommon(p, element);
+
+	    return element;
   }
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(HWSignalHeadXml.class.getName());
   

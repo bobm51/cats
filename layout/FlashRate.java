@@ -77,8 +77,10 @@ public class FlashRate extends JMenuItem implements XMLEleObject {
     if (TheFlashRate == null) {
       init();
       addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent ae) {
-          JComboBox box = new JComboBox(RATES);
+        @SuppressWarnings("rawtypes")
+		public void actionPerformed(ActionEvent ae) {
+          @SuppressWarnings("unchecked")
+		JComboBox box = new JComboBox(RATES);
           JPanel p = new JPanel();
           p.add(new JLabel("Select rate (in milliseconds)"));
           box.setSelectedIndex(Rate);

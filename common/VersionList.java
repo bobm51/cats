@@ -24,12 +24,12 @@ public class VersionList {
 /**
  * CATS
  */
-public static final String CATS_VERSION = "2.39";
+public static final String CATS_VERSION = "2.40";
 
 /**
  * CATS date
  */
-public static final String CATS_DATE = "January 10, 2018";
+public static final String CATS_DATE = "January 6, 2019";
 /**
  * designer
  */

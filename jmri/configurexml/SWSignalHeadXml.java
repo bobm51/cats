@@ -94,17 +94,19 @@ public class SWSignalHeadXml extends jmri.managers.configurexml.AbstractNamedBea
    * @param o is the SWSignalHead.
    */
   public Element store(Object o) {
-    SWSignalHead p = (SWSignalHead)o;
+	    SWSignalHead p = (SWSignalHead)o;
 
-    Element element = new Element("signalhead");
-    element.setAttribute("class", this.getClass().getName());
+	    Element element = new Element("signalhead");
+	    element.setAttribute("class", this.getClass().getName());
 
-    // include contents
-    element.setAttribute("systemName", p.getSystemName());
-    if (p.getUserName() != null) {
-      element.setAttribute("userName", p.getUserName());
-    }
-    return element;
+//	    // include contents
+//	    element.setAttribute("systemName", p.getSystemName());
+//	    if (p.getUserName() != null) {
+//	      element.setAttribute("userName", p.getUserName());
+//	    }
+	    element.addContent(new Element("systemName").addContent(p.getSystemName()));
+
+	    return element;
   }
   static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(SWSignalHeadXml.class.getName());
 }

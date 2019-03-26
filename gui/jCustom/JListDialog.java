@@ -38,7 +38,7 @@ import javax.swing.JScrollPane;
  * <p>Title: CATS - Crandic Automated Traffic System</p>
  * <p>Description: A program for dispatching trains on Pat Lana's
  * Crandic model railroad.
- * <p>Copyright: Copyright (c) 2004, 2009</p>
+ * <p>Copyright: Copyright (c) 2004, 2009, 2019</p>
  * <p>Company: </p>
  * @author Rodney Black
  * @version $Revision$
@@ -54,7 +54,8 @@ public class JListDialog {
   /**
    * is the JList presented to the user.
    */
-  private JList TheList;
+  @SuppressWarnings("rawtypes")
+private JList TheList;
 
   /**
    * the consructor.
@@ -67,7 +68,8 @@ public class JListDialog {
    *        should be placed on the screen.
    *
    */
-  public JListDialog(JComponent body, JList contents, String title, Point pt) {
+  @SuppressWarnings("rawtypes")
+public JListDialog(JComponent body, JList contents, String title, Point pt) {
     TheList = contents;
     AD = new AcceptDialog(body, title);
     Point offset = WindowFinder.getLocation().getLocationOnScreen();
@@ -97,8 +99,10 @@ public class JListDialog {
    * @see javax.swing.JList
    * @see cats.gui.jCustom.AcceptDialog
    */
-  static public int select(String[] contents, String title, Point pt) {
-    JList list = new JList(contents);
+  @SuppressWarnings("unchecked")
+static public int select(String[] contents, String title, Point pt) {
+    @SuppressWarnings("rawtypes")
+	JList list = new JList(contents);
     JListDialog dialog = new JListDialog(list, list, title, pt);
     if (dialog.AD.Result) {
       return dialog.TheList.getSelectedIndex();
@@ -121,10 +125,12 @@ public class JListDialog {
    * @see javax.swing.JList
    * @see cats.gui.jCustom.AcceptDialog
    */
-  static public int select(String[] caption, String[] contents, String title,
+  @SuppressWarnings("rawtypes")
+static public int select(String[] caption, String[] contents, String title,
                            Point pt) {
     JPanel fixed = new JPanel();
-    JList list = new JList(contents);
+    @SuppressWarnings("unchecked")
+	JList list = new JList(contents);
     JPanel panel = new JPanel();
     JListDialog dialog;
     fixed.setLayout(new BoxLayout(fixed, BoxLayout.Y_AXIS));
@@ -155,9 +161,11 @@ public class JListDialog {
    * @see javax.swing.JList
    * @see cats.gui.jCustom.AcceptDialog
    */
-  static public int select(Vector<String> contents, String title, Point pt) {
+  @SuppressWarnings("rawtypes")
+static public int select(Vector<String> contents, String title, Point pt) {
     JListDialog dialog;
-    JList list = new JList(contents);
+    @SuppressWarnings("unchecked")
+	JList list = new JList(contents);
     JScrollPane jsp = new JScrollPane(list);
     list.setSelectedIndex( -1);
     dialog = new JListDialog(jsp, list, title, pt);
@@ -176,7 +184,8 @@ public class JListDialog {
     /**
      * the list from which a selection is being made
      */
-    private JList DList;
+    @SuppressWarnings("rawtypes")
+	private JList DList;
 
     /**
      * is the AcceptDialog wrapping the list.
@@ -189,7 +198,7 @@ public class JListDialog {
      * @param list is the JList being monitored.
      * @param aDialog is the AcceptDialog wrapping the list.
      */
-    public Clicker(JList list, AcceptDialog aDialog) {
+    public Clicker(@SuppressWarnings("rawtypes") JList list, AcceptDialog aDialog) {
       DList = list;
       ADialog = aDialog;
     }
@@ -199,7 +208,8 @@ public class JListDialog {
      *
      * @param me is the AWT event.
      */
-    public void mouseClicked(MouseEvent me) {
+    @SuppressWarnings("rawtypes")
+	public void mouseClicked(MouseEvent me) {
       if (me.getClickCount() > 1) {
         DList.setSelectedIndex( ( (JList) me.getSource()).locationToIndex(
             me.getPoint()));

@@ -215,7 +215,7 @@ public class JmriPrefixManager {
    */
   public static Light findLight(String prefix, String addr,
       String managerName) {
-    LightManager lm = InstanceManager.lightManagerInstance();
+    LightManager lm = InstanceManager.getDefault(LightManager.class);
     Light light;
     if (lm == null) {
       InstanceManager.setLightManager(lm = new ProxyLightManager());
@@ -254,7 +254,7 @@ public class JmriPrefixManager {
    * @return a Memory object for the address
    */
   public static Memory findMemory(String prefix, String addr) {
-    MemoryManager mm = InstanceManager.memoryManagerInstance();
+    MemoryManager mm = InstanceManager.getDefault(MemoryManager.class);
     Memory m= null;
     if (mm == null) {
       errorOut("JMRI memory manager was not created.");
@@ -277,7 +277,7 @@ public class JmriPrefixManager {
    */
   public static Sensor findSensor(String prefix, String addr,
       String managerName) {
-    SensorManager sm = InstanceManager.sensorManagerInstance();
+    SensorManager sm = InstanceManager.getDefault(SensorManager.class);
     SensorManager newMgr = null;
     Sensor s;
     if (sm == null) {
@@ -329,7 +329,7 @@ public class JmriPrefixManager {
    */
   public static Turnout findTurnout(String prefix, String addr,
       String managerName) {
-    TurnoutManager tm = InstanceManager.turnoutManagerInstance();
+    TurnoutManager tm = InstanceManager.getDefault(TurnoutManager.class);
     Turnout t;
     if (tm == null) {
     	tm = new ProxyTurnoutManager();
@@ -370,7 +370,7 @@ public class JmriPrefixManager {
    */
   public static Reporter findReporter(String prefix, String addr,
       String managerName) {
-    ReporterManager rm = InstanceManager.reporterManagerInstance();
+    ReporterManager rm = InstanceManager.getDefault(ReporterManager.class);
     Reporter r = null;
     if (rm == null) {
       errorOut("JMRI reporter manager was not created.");
@@ -406,7 +406,7 @@ public class JmriPrefixManager {
    * @return a Route object for the address
    */
   public static Route findRoute(String prefix, String addr) {
-    RouteManager rm = InstanceManager.routeManagerInstance();
+    RouteManager rm = InstanceManager.getDefault(RouteManager.class);
     Route r = null;
     if (rm == null) {
       errorOut("JMRI route manager was not created.");

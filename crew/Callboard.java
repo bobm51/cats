@@ -48,7 +48,6 @@ extends AbstractStore {
   /**
    * The Tag for identifying the CrewStore in the XML file.
    */
-  @SuppressWarnings("FieldNameHidesFieldInSuperclass")
   private static final String XML_TAG = "CREWSTORE";
 
   /**
@@ -154,7 +153,6 @@ extends AbstractStore {
    * @param prop is the initial Field keys.
    *
    */
-  @SuppressWarnings("OverridableMethodCallInConstructor")
   public Callboard(String sTag, String fTag, String rTag, FieldInfo[] prop) {
     super(sTag, fTag, rTag, prop);
     //    XML_TAG = sTag;
@@ -501,11 +499,8 @@ extends AbstractStore {
     trial.setStrategy(new CrewSelectionStrategy(trial));
     FieldPair pair;
     GenericRecord rec;
-    @SuppressWarnings("UnusedAssignment")
     boolean enableOnDuty = false;
-    @SuppressWarnings("UnusedAssignment")
     boolean enableOffDuty = false;
-    @SuppressWarnings("UnusedAssignment")
     boolean enableLeft = false;
     int now = TimeSpec.currentTime();
     int law = Hours.getHours();
